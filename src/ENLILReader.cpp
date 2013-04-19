@@ -59,13 +59,20 @@ bool ENLILReader::Read()
   // TODO loop over the volume in different orders
   // maybe make a "Volume" class with different iterators?
 
+	
+
+	std::cout << "r:   [" << rMin << ", " << rMax << "]\n"; 
+	std::cout << "theta: [" << thetaMin << ", " << thetaMax << "]\n";
+	std::cout << "phi:   [" << phiMin << ", " << phiMax << "]\n";
+
   // Keep track of min and max values for interpolation
   // TODO compare how well actual_min and actual_max works for this
   std::vector<float> *data = dataObject_->Data();
-
   data->resize(dataObject_->Size());
+
   float min = 1e20f;
   float max = -1e20f;
+  // Loop over voxels in the grid that is about to be filled
   for (unsigned int z=0; z<dataObject_->ZDim(); z++)
   {
     unsigned int progress =
@@ -80,10 +87,12 @@ bool ENLILReader::Read()
             x +
             y*dataObject_->XDim() +
             z*dataObject_->XDim()*dataObject_->YDim();
+
         // Calculate normalized coordinates [-0.5, 0.5]
         float xNorm = -0.5f + (float)x/(float)(dataObject_->XDim()-1);
         float yNorm = -0.5f + (float)y/(float)(dataObject_->YDim()-1);
         float zNorm = -0.5f + (float)z/(float)(dataObject_->ZDim()-1);
+
         // Convert to spherical coordinates
         float r = sqrt(xNorm*xNorm+yNorm*yNorm+zNorm*zNorm);
         float theta, phi;
@@ -96,13 +105,17 @@ bool ENLILReader::Read()
           theta = acos(zNorm/r);
           phi = atan2(yNorm, xNorm);
         }
+
         while (phi < 0.f) phi += M_PI*2.f;
+
         // Go to physical coordinates before sampling
         float rPh = rMin + r*(rMax-rMin);
         float thetaPh = theta;
         float phiPh = phi;
+
         // TODO hardcoded values
-        float rho, rho_back, diff;
+        float rho, rho_back;
+        float diff = 0.f;
         // See if sample point is inside domain
         if (rPh < rMin || rPh > rMax || thetaPh < thetaMin ||
             thetaPh > thetaMax || phiPh < phiMin || phiPh > phiMax)
@@ -129,7 +142,7 @@ bool ENLILReader::Read()
                                                phiPh);
           // Difference with a magic number scalar
           // TODO update when proper CDF comes around
-          diff = rho - 5.f * rho_back;
+					diff = rho;
           // Update max/min
           if (diff > max) max = diff;
           else if (diff < min) min = diff;

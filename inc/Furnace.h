@@ -10,18 +10,15 @@
 
 #include <string>
 
-namespace osp
-{
+namespace osp {
 
 class CDFReader;
 class VDFWriter;
 
-class Furnace
-{
+class Furnace {
 public:
   // List all the supported model types
-  enum ModelType
-  {
+  enum ModelType {
     NO_MODEL = 0,
     ENLIL
   };
@@ -29,13 +26,13 @@ public:
   ~Furnace();
   // Setters for variables that are not read from file
   void SetModelType(ModelType _modelType);
-  void SetInFilename(std::string _inFilename);
-  void SetOutFilename(std::string _outFilename);
+	void SetPath(const std::string &_path);
+  void SetOutFilename(const std::string &_outFilename);
   void SetDimensions(unsigned int _xDim,
                      unsigned int _yDim,
                      unsigned int _zDim);
   // Methods
-  bool Read();
+  bool ReadFolder();
   bool Write();
 private:
   ModelType modelType_;

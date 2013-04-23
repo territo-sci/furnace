@@ -15,38 +15,47 @@
 
 #include <vector>
 
-namespace osp
-{
+namespace osp {
 
-class VDFData
-{
+class VDFData {
 public:
   static VDFData * New();
   ~VDFData();
-  // Setters
-  void SetNrDimensions(unsigned int _nrDimensions);
-  void SetNrTimesteps(unsigned int _nrTimesteps);
+  void SetDataDimensionality(unsigned int _dataDimensionality);
+  void SetNumTimesteps(unsigned int _numTimesteps);
   void SetDimensions(unsigned int _xDim,
                      unsigned int _yDim,
                      unsigned int _zDim);
-  // Accessors
-  unsigned int NrDimensions() const { return nrDimensions_; }
-  unsigned int NrTimesteps() const { return nrTimesteps_; }
+  unsigned int DataDimensionality() const { return dataDimensionality_; }
+  unsigned int NumTimesteps() const { return numTimesteps_; }
   unsigned int XDim() const { return xDim_; }
   unsigned int YDim() const { return yDim_; }
   unsigned int ZDim() const { return zDim_; }
-  unsigned int Size() const { return size_; }
+	void SetMin(float _min);
+	void SetMax(float _max);
+	float Min() const { return min_; }
+	float Max() const { return max_; }
+	unsigned int NumVoxelsPerTimestep() const { return numVoxelsPerTimestep_; }
+  // Return first index in data vector for a specific frame
+	unsigned int TimestepOffset(unsigned int _timestep) const {
+		return numVoxelsPerTimestep_ * _timestep;
+	}
+	unsigned int NumVoxelsTotal() const {
+		return numVoxelsPerTimestep_ * numTimesteps_;
+	}
   std::vector<float> * Data() { return &data_; }
 private:
   // Constructor - make sure to give all values defaults!
   VDFData();
   // Data members
-  unsigned int nrDimensions_;
-  unsigned int nrTimesteps_;
+  unsigned int dataDimensionality_;
+  unsigned int numTimesteps_;
   unsigned int xDim_;
   unsigned int yDim_;
   unsigned int zDim_;
-  unsigned int size_; // Calculated from x, y and z dimensions
+  unsigned int numVoxelsPerTimestep_;
+	float min_;
+	float max_;
   std::vector<float> data_;
 };
 

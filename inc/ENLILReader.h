@@ -17,7 +17,8 @@ class ENLILReader : public CDFReader
 {
 public:
   static ENLILReader * New();
-  virtual bool Read();
+  virtual bool ReadFile(const std::string &_filename, 
+	                      unsigned int _timestep);
   virtual ~ENLILReader();
 private:
   ENLILReader();

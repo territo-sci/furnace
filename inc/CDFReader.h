@@ -17,6 +17,11 @@
 #include <string>
 #include <vector>
 
+namespace ccmc {
+	class Kameleon;
+	class Interpolator;
+}
+
 namespace osp
 {
 
@@ -25,25 +30,28 @@ class VDFData;
 class CDFReader
 {
 public:
-  // Destructor
   virtual ~CDFReader();
-  // Member functions
-  virtual bool Read() = 0; // This is what sublasses need to implement
-  // Setters for members that are not read from file
-  void SetInFilename(std::string _inFilename);
-  void SetDimensions(unsigned int _xDim,unsigned int _yDim,unsigned int _zDim);
+	// Read a whole folder with CDF files. Def. imlementation may be overridden.
+	virtual bool ReadFolder(); 
+	virtual void SetPath(const std::string &_path);
+	// Read an indivudual file. Subclasses must provide implementation.
+  virtual bool ReadFile(const std::string &_inFilename,
+	                      unsigned int _timestep) = 0;
   // Accessors
   VDFData * DataObject() { return dataObject_; }
   bool HasRead() const { return hasRead_; }
-
 protected:
   // Constructor, takes care of VDFDataObject initialization
   CDFReader();
   // Data members
-  std::string inFilename_;
+	std::string path_;
   std::vector<std::string> variableNames_; // support combinations of variables
   VDFData * dataObject_;
   bool hasRead_; // Remember to have Read() implementations set this
+
+	// CCMC parts
+	ccmc::Kameleon *kameleon_;
+	ccmc::Interpolator *interpolator_;
 };
 
 }

@@ -3,6 +3,8 @@ cmake_install.cmake
 Makefile
 CMakeFiles/
 Debug/
+external/
+/external
 
 # Compiled Object files
 *.slo

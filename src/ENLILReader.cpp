@@ -14,52 +14,47 @@
 
 using namespace osp;
 
-ENLILReader * ENLILReader::New()
-{
+ENLILReader * ENLILReader::New() {
   return new ENLILReader();
 }
 
-ENLILReader::~ENLILReader()
-{ }
+ENLILReader::~ENLILReader() { }
 
 ENLILReader::ENLILReader() : CDFReader() { }
 
-bool ENLILReader::Read()
-{
+bool ENLILReader::ReadFile(const std::string &_filename, 
+                           unsigned int _timestep) {
+
   // TODO hardcoded variables and difference until proper CDF files arrives
   variableNames_.push_back("rho");
   variableNames_.push_back("rho-back");
-  dataObject_->SetNrDimensions(1);
-  dataObject_->SetNrTimesteps(1);
 
-  ccmc::Kameleon kameleon;
-  if (kameleon.open(inFilename_) != ccmc::FileReader::OK)
-  {
-    std::cout << "Failed to open " << inFilename_ << "\n";
+	// Open file using Kameleon instance (from CDFReader base class)
+  if (kameleon_->open(_filename) != ccmc::FileReader::OK) {
+    std::cout << "Failed to open " << _filename << "\n";
     return false;
   }
-
-  // Create interpolator for accessing values
-  ccmc::Interpolator *interpolator = kameleon.createNewInterpolator();
+ 
+  // Interpolator has to be created after opening file
+	if (interpolator_ != NULL) delete interpolator_;
+	interpolator_ = kameleon_->createNewInterpolator();
 
   // Mins and maxes from the model
   float rMin =
-      kameleon.getVariableAttribute("r", "actual_min").getAttributeFloat();
+      kameleon_->getVariableAttribute("r", "actual_min").getAttributeFloat();
   float rMax =
-      kameleon.getVariableAttribute("r", "actual_max").getAttributeFloat();
+      kameleon_->getVariableAttribute("r", "actual_max").getAttributeFloat();
   float thetaMin =
-      kameleon.getVariableAttribute("theta", "actual_min").getAttributeFloat();
+      kameleon_->getVariableAttribute("theta", "actual_min").getAttributeFloat();
   float thetaMax =
-      kameleon.getVariableAttribute("theta", "actual_max").getAttributeFloat();
+      kameleon_->getVariableAttribute("theta", "actual_max").getAttributeFloat();
   float phiMin =
-      kameleon.getVariableAttribute("phi", "actual_min").getAttributeFloat();
+      kameleon_->getVariableAttribute("phi", "actual_min").getAttributeFloat();
   float phiMax =
-      kameleon.getVariableAttribute("phi", "actual_max").getAttributeFloat();
+      kameleon_->getVariableAttribute("phi", "actual_max").getAttributeFloat();
 
   // TODO loop over the volume in different orders
   // maybe make a "Volume" class with different iterators?
-
-	
 
 	std::cout << "r:   [" << rMin << ", " << rMax << "]\n"; 
 	std::cout << "theta: [" << thetaMin << ", " << thetaMax << "]\n";
@@ -68,22 +63,22 @@ bool ENLILReader::Read()
   // Keep track of min and max values for interpolation
   // TODO compare how well actual_min and actual_max works for this
   std::vector<float> *data = dataObject_->Data();
-  data->resize(dataObject_->Size());
+	
+	std::cout << "Reading timestep " << _timestep+1 << 
+	             "/" << dataObject_->NumTimesteps() << "\n";
 
   float min = 1e20f;
   float max = -1e20f;
   // Loop over voxels in the grid that is about to be filled
-  for (unsigned int z=0; z<dataObject_->ZDim(); z++)
-  {
+  for (unsigned int z=0; z<dataObject_->ZDim(); z++) {
     unsigned int progress =
         (unsigned int)(((float)z/(float)dataObject_->ZDim())*100.f);
     if (progress % 10 == 0)
       std::cout << "Processing... " << progress << "%\r" << std::flush;
-    for (unsigned int y=0; y<dataObject_->ZDim(); y++)
-    {
-      for (unsigned int x=0; x<dataObject_->XDim(); x++)
-      {
+    for (unsigned int y=0; y<dataObject_->ZDim(); y++) {
+      for (unsigned int x=0; x<dataObject_->XDim(); x++) {
         int index =
+						dataObject_->TimestepOffset(_timestep) +
             x +
             y*dataObject_->XDim() +
             z*dataObject_->XDim()*dataObject_->YDim();
@@ -96,12 +91,9 @@ bool ENLILReader::Read()
         // Convert to spherical coordinates
         float r = sqrt(xNorm*xNorm+yNorm*yNorm+zNorm*zNorm);
         float theta, phi;
-        if (r == 0.f)
-        {
+        if (r == 0.f) {
           theta = phi = 0.f;
-        }
-        else
-        {
+        } else {
           theta = acos(zNorm/r);
           phi = atan2(yNorm, xNorm);
         }
@@ -118,12 +110,9 @@ bool ENLILReader::Read()
         float diff = 0.f;
         // See if sample point is inside domain
         if (rPh < rMin || rPh > rMax || thetaPh < thetaMin ||
-            thetaPh > thetaMax || phiPh < phiMin || phiPh > phiMax)
-        {
+            thetaPh > thetaMax || phiPh < phiMin || phiPh > phiMax) {
           rho = rho_back = 0.f;
-        }
-        else
-        {
+        } else {
           // ENLIL CDF specific hacks!
           // Convert from meters to AU for interpolator
           rPh /= ccmc::constants::AU_in_meters;
@@ -132,11 +121,11 @@ bool ENLILReader::Read()
           // Convert from [0, 2pi] rad to [0, 360] degrees
           phiPh = phiPh*180.f/M_PI;
           // Sample
-          rho = interpolator->interpolate(variableNames_[0],
+          rho = interpolator_->interpolate(variableNames_[0],
                                           rPh,
                                           thetaPh,
                                           phiPh);
-          rho_back = interpolator->interpolate(variableNames_[1],
+          rho_back = interpolator_->interpolate(variableNames_[1],
                                                rPh,
                                                thetaPh,
                                                phiPh);
@@ -153,17 +142,10 @@ bool ENLILReader::Read()
     }
   }
 
-  // Normalize data
-  std::vector<float>::iterator it;
-  for (it=data->begin(); it!=data->end(); it++)
-  {
-    *it = (*it - min)/(max - min);
-  }
+  dataObject_->SetMin(min);
+	dataObject_->SetMax(max);
 
   std::cout << "Processing... 100%\n";
-
-  // Clean up
-  delete interpolator;
 
   hasRead_ = true;
 

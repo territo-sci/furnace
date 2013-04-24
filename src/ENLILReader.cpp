@@ -54,8 +54,7 @@ bool ENLILReader::ReadFile(const std::string &_filename,
       kameleon_->getVariableAttribute("phi", "actual_max").getAttributeFloat();
 
   // TODO loop over the volume in different orders
-  // maybe make a "Volume" class with different iterators?
-
+  // maybe make a "Volume" class with different iterators
 	std::cout << "r:   [" << rMin << ", " << rMax << "]\n"; 
 	std::cout << "theta: [" << thetaMin << ", " << thetaMax << "]\n";
 	std::cout << "phi:   [" << phiMin << ", " << phiMax << "]\n";
@@ -69,6 +68,73 @@ bool ENLILReader::ReadFile(const std::string &_filename,
 
   float min = 1e20f;
   float max = -1e20f;
+ 
+  unsigned int rDim = dataObject_->XDim();
+	unsigned int thetaDim = dataObject_->YDim();
+	unsigned int phiDim = dataObject_->ZDim();
+
+  for (unsigned int phi=0; phi<phiDim; phi++) {
+		for (unsigned int theta=0; theta<thetaDim; theta++) {
+			for (unsigned int r=0; r<rDim; r++) {
+
+				// Calculate array index
+				unsigned int index = r + theta*rDim + phi*rDim*thetaDim;
+				
+				// Put r in the [0..sqrt(3)] range
+				float rNorm = sqrt(3.0)*(float)r/(float)(rDim-1);
+
+				// Put theta in the [0..PI] range
+				float thetaNorm = M_PI*(float)theta/(float)(thetaDim-1);
+
+				// Put phi in the [0..2PI] range
+				float phiNorm = 2.0*M_PI*(float)phi/(float)(phiDim-1);
+
+        // Go to physical coordinates before sampling
+        float rPh = rMin + rNorm*(rMax-rMin);
+        float thetaPh = thetaNorm;
+        float phiPh = phiNorm;
+
+        // TODO hardcoded values
+        float rho, rho_back;
+        float diff = 0.f;
+        // See if sample point is inside domain
+        if (rPh < rMin || rPh > rMax || thetaPh < thetaMin ||
+            thetaPh > thetaMax || phiPh < phiMin || phiPh > phiMax) {
+          rho = rho_back = 0.f;
+        } else {
+          // ENLIL CDF specific hacks!
+          // Convert from meters to AU for interpolator
+          rPh /= ccmc::constants::AU_in_meters;
+          // Convert from colatitude [0, pi] rad to latitude [-90, 90] degrees
+          thetaPh = -thetaPh*180.f/M_PI+90.f;
+          // Convert from [0, 2pi] rad to [0, 360] degrees
+          phiPh = phiPh*180.f/M_PI;
+          // Sample
+          rho = interpolator_->interpolate(variableNames_[0],
+                                          rPh,
+                                          thetaPh,
+                                          phiPh);
+          rho_back = interpolator_->interpolate(variableNames_[1],
+                                               rPh,
+                                               thetaPh,
+                                               phiPh);
+          // Difference with a magic number scalar
+          // TODO update when proper CDF comes around
+					diff = rho - 1.f*rho_back;
+        }
+				// Update max/min
+				if (diff > max) max = diff;
+				else if (diff < min) min = diff;
+        // Save value
+        data->at(index) = diff;
+			}
+		}
+	}
+
+	/*
+
+  
+
   // Loop over voxels in the grid that is about to be filled
   for (unsigned int z=0; z<dataObject_->ZDim(); z++) {
     unsigned int progress =
@@ -141,6 +207,8 @@ bool ENLILReader::ReadFile(const std::string &_filename,
       }
     }
   }
+
+	*/
 
   dataObject_->SetMin(min);
 	dataObject_->SetMax(max);

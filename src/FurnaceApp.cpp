@@ -10,7 +10,7 @@ int main()
   osp::Furnace *furnace = osp::Furnace::New();
   furnace->SetModelType(osp::Furnace::ENLIL);
   furnace->SetDimensions(128, 128, 128);
-	furnace->SetPath("/home/vsand/OpenSpace/CDFData/testthree/");
+	furnace->SetPath("/home/vsand/OpenSpace/CDFData/test/");
   furnace->SetOutFilename("/home/vsand/OpenSpace/enlilTestData.vdf");
   furnace->ReadFolder();
   furnace->Write();

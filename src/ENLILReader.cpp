@@ -72,13 +72,21 @@ bool ENLILReader::ReadFile(const std::string &_filename,
   unsigned int rDim = dataObject_->XDim();
 	unsigned int thetaDim = dataObject_->YDim();
 	unsigned int phiDim = dataObject_->ZDim();
+  unsigned int offset = dataObject_->TimestepOffset(_timestep);
 
   for (unsigned int phi=0; phi<phiDim; phi++) {
+
+		unsigned int progress;
+		progress = (unsigned int)(((float)phi/(float)phiDim)*100.f);
+		if (progress % 10 == 0 ) {
+			std::cout << "Processing... " << progress <<  "%\r" << std::flush;
+		}
+
 		for (unsigned int theta=0; theta<thetaDim; theta++) {
 			for (unsigned int r=0; r<rDim; r++) {
 
 				// Calculate array index
-				unsigned int index = r + theta*rDim + phi*rDim*thetaDim;
+				unsigned int index = offset + r + theta*rDim + phi*rDim*thetaDim;
 				
 				// Put r in the [0..sqrt(3)] range
 				float rNorm = sqrt(3.0)*(float)r/(float)(rDim-1);
@@ -92,7 +100,9 @@ bool ENLILReader::ReadFile(const std::string &_filename,
         // Go to physical coordinates before sampling
         float rPh = rMin + rNorm*(rMax-rMin);
         float thetaPh = thetaNorm;
-        float phiPh = phiNorm;
+				// phi range needs to be mapped to the slightly different
+				// model range to avoid gaps in the data
+        float phiPh = phiMin + phiNorm/(2.0*M_PI)*(phiMax-phiMin);
 
         // TODO hardcoded values
         float rho, rho_back;
@@ -120,7 +130,7 @@ bool ENLILReader::ReadFile(const std::string &_filename,
                                                phiPh);
           // Difference with a magic number scalar
           // TODO update when proper CDF comes around
-					diff = rho - 1.f*rho_back;
+					diff = rho - 10.f*rho_back;
         }
 				// Update max/min
 				if (diff > max) max = diff;
@@ -130,85 +140,6 @@ bool ENLILReader::ReadFile(const std::string &_filename,
 			}
 		}
 	}
-
-	/*
-
-  
-
-  // Loop over voxels in the grid that is about to be filled
-  for (unsigned int z=0; z<dataObject_->ZDim(); z++) {
-    unsigned int progress =
-        (unsigned int)(((float)z/(float)dataObject_->ZDim())*100.f);
-    if (progress % 10 == 0)
-      std::cout << "Processing... " << progress << "%\r" << std::flush;
-    for (unsigned int y=0; y<dataObject_->ZDim(); y++) {
-      for (unsigned int x=0; x<dataObject_->XDim(); x++) {
-        int index =
-						dataObject_->TimestepOffset(_timestep) +
-            x +
-            y*dataObject_->XDim() +
-            z*dataObject_->XDim()*dataObject_->YDim();
-
-        // Calculate normalized coordinates [-1, 1]
-        float xNorm = -1.f + 2.f*(float)x/(float)(dataObject_->XDim()-1);
-        float yNorm = -1.f + 2.f*(float)y/(float)(dataObject_->YDim()-1);
-        float zNorm = -1.f + 2.f*(float)z/(float)(dataObject_->ZDim()-1);
-
-        // Convert to spherical coordinates
-        float r = sqrt(xNorm*xNorm+yNorm*yNorm+zNorm*zNorm);
-        float theta, phi;
-        if (r == 0.f) {
-          theta = phi = 0.f;
-        } else {
-          theta = acos(zNorm/r);
-          phi = atan2(yNorm, xNorm);
-        }
-
-        while (phi < 0.f) phi += M_PI*2.f;
-
-        // Go to physical coordinates before sampling
-        float rPh = rMin + r*(rMax-rMin);
-        float thetaPh = theta;
-        float phiPh = phi;
-
-        // TODO hardcoded values
-        float rho, rho_back;
-        float diff = 0.f;
-        // See if sample point is inside domain
-        if (rPh < rMin || rPh > rMax || thetaPh < thetaMin ||
-            thetaPh > thetaMax || phiPh < phiMin || phiPh > phiMax) {
-          rho = rho_back = 0.f;
-        } else {
-          // ENLIL CDF specific hacks!
-          // Convert from meters to AU for interpolator
-          rPh /= ccmc::constants::AU_in_meters;
-          // Convert from colatitude [0, pi] rad to latitude [-90, 90] degrees
-          thetaPh = -thetaPh*180.f/M_PI+90.f;
-          // Convert from [0, 2pi] rad to [0, 360] degrees
-          phiPh = phiPh*180.f/M_PI;
-          // Sample
-          rho = interpolator_->interpolate(variableNames_[0],
-                                          rPh,
-                                          thetaPh,
-                                          phiPh);
-          rho_back = interpolator_->interpolate(variableNames_[1],
-                                               rPh,
-                                               thetaPh,
-                                               phiPh);
-          // Difference with a magic number scalar
-          // TODO update when proper CDF comes around
-					diff = rho - 1.f*rho_back;
-          // Update max/min
-          if (diff > max) max = diff;
-          else if (diff < min) min = diff;
-        }
-        // Save value
-        data->at(index) = diff;
-      }
-    }
-  }
-
-	*/
 
   dataObject_->SetMin(min);
 	dataObject_->SetMax(max);

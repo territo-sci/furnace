@@ -83,10 +83,10 @@ bool ENLILReader::ReadFile(const std::string &_filename,
             y*dataObject_->XDim() +
             z*dataObject_->XDim()*dataObject_->YDim();
 
-        // Calculate normalized coordinates [-0.5, 0.5]
-        float xNorm = -0.5f + (float)x/(float)(dataObject_->XDim()-1);
-        float yNorm = -0.5f + (float)y/(float)(dataObject_->YDim()-1);
-        float zNorm = -0.5f + (float)z/(float)(dataObject_->ZDim()-1);
+        // Calculate normalized coordinates [-1, 1]
+        float xNorm = -1.f + 2.f*(float)x/(float)(dataObject_->XDim()-1);
+        float yNorm = -1.f + 2.f*(float)y/(float)(dataObject_->YDim()-1);
+        float zNorm = -1.f + 2.f*(float)z/(float)(dataObject_->ZDim()-1);
 
         // Convert to spherical coordinates
         float r = sqrt(xNorm*xNorm+yNorm*yNorm+zNorm*zNorm);
@@ -131,7 +131,7 @@ bool ENLILReader::ReadFile(const std::string &_filename,
                                                phiPh);
           // Difference with a magic number scalar
           // TODO update when proper CDF comes around
-					diff = rho;
+					diff = rho - 1.f*rho_back;
           // Update max/min
           if (diff > max) max = diff;
           else if (diff < min) min = diff;

@@ -5,8 +5,7 @@
 
 #include <ccmc/Kameleon.h>
 
-int main()
-{
+int main() {
   osp::Furnace *furnace = osp::Furnace::New();
   furnace->SetModelType(osp::Furnace::ENLIL);
   furnace->SetDimensions(128, 128, 128);

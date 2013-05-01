@@ -25,10 +25,6 @@ ENLILReader::ENLILReader() : CDFReader() { }
 bool ENLILReader::ReadFile(const std::string &_filename, 
                            unsigned int _timestep) {
 
-  // TODO hardcoded variables and difference until proper CDF files arrives
-  variableNames_.push_back("rho");
-  variableNames_.push_back("rho-back");
-
 	// Open file using Kameleon instance (from CDFReader base class)
   if (kameleon_->open(_filename) != ccmc::FileReader::OK) {
     std::cout << "Failed to open " << _filename << "\n";
@@ -102,14 +98,21 @@ bool ENLILReader::ReadFile(const std::string &_filename,
         float thetaPh = thetaNorm;
 				// phi range needs to be mapped to the slightly different
 				// model range to avoid gaps in the data
-        float phiPh = phiMin + phiNorm/(2.0*M_PI)*(phiMax-phiMin);
+				// Subtract a small term to avoid rounding errors when comparing
+				// to phiMax.
+        float phiPh = phiMin + phiNorm/(2.0*M_PI)*(phiMax-phiMin-0.000001);
 
         // TODO hardcoded values
-        float rho, rho_back;
+        float rho, rho_back, r, r_back;
         float diff = 0.f;
         // See if sample point is inside domain
         if (rPh < rMin || rPh > rMax || thetaPh < thetaMin ||
             thetaPh > thetaMax || phiPh < phiMin || phiPh > phiMax) {
+
+					if (phiPh > phiMax) {
+						std::cout << "Warning: There might be a gap in the data\n";
+					}
+
           rho = rho_back = 0.f;
         } else {
           // ENLIL CDF specific hacks!
@@ -120,23 +123,26 @@ bool ENLILReader::ReadFile(const std::string &_filename,
           // Convert from [0, 2pi] rad to [0, 360] degrees
           phiPh = phiPh*180.f/M_PI;
           // Sample
-          rho = interpolator_->interpolate(variableNames_[0],
+          rho = interpolator_->interpolate("rho",
                                           rPh,
                                           thetaPh,
                                           phiPh);
-          rho_back = interpolator_->interpolate(variableNames_[1],
+          rho_back = interpolator_->interpolate("rho-back",
                                                rPh,
                                                thetaPh,
                                                phiPh);
+					r = interpolator_->interpolate("r", rPh, thetaPh, phiPh);
+					r_back = interpolator_->interpolate("r-back", rPh, thetaPh, phiPh);
           // Difference with a magic number scalar
           // TODO update when proper CDF comes around
-					diff = rho - 10.f*rho_back;
+					diff = rho*r*r - 100.f*rho_back*r_back*r_back;
         }
 				// Update max/min
 				if (diff > max) max = diff;
 				else if (diff < min) min = diff;
         // Save value
         data->at(index) = diff;
+
 			}
 		}
 	}

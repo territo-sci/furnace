@@ -51,9 +51,9 @@ bool ENLILReader::ReadFile(const std::string &_filename,
 
   // TODO loop over the volume in different orders
   // maybe make a "Volume" class with different iterators
-	std::cout << "r:   [" << rMin << ", " << rMax << "]\n"; 
-	std::cout << "theta: [" << thetaMin << ", " << thetaMax << "]\n";
-	std::cout << "phi:   [" << phiMin << ", " << phiMax << "]\n";
+	//std::cout << "r:   [" << rMin << ", " << rMax << "]\n"; 
+	//std::cout << "theta: [" << thetaMin << ", " << thetaMax << "]\n";
+	//std::cout << "phi:   [" << phiMin << ", " << phiMax << "]\n";
 
   // Keep track of min and max values for interpolation
   // TODO compare how well actual_min and actual_max works for this
@@ -103,7 +103,7 @@ bool ENLILReader::ReadFile(const std::string &_filename,
         float phiPh = phiMin + phiNorm/(2.0*M_PI)*(phiMax-phiMin-0.000001);
 
         // TODO hardcoded values
-        float rho, rho_back, r, r_back;
+        float rho, rho_back;
         float diff = 0.f;
         // See if sample point is inside domain
         if (rPh < rMin || rPh > rMax || thetaPh < thetaMin ||
@@ -131,16 +131,14 @@ bool ENLILReader::ReadFile(const std::string &_filename,
                                                rPh,
                                                thetaPh,
                                                phiPh);
-					r = interpolator_->interpolate("r", rPh, thetaPh, phiPh);
-					r_back = interpolator_->interpolate("r-back", rPh, thetaPh, phiPh);
-          // Difference with a magic number scalar
-          // TODO update when proper CDF comes around
-					diff = rho*r*r - 100.f*rho_back*r_back*r_back;
+					diff = rho - rho_back;
+          if (diff < 0.f) diff = 0.f;
         }
 				// Update max/min
 				if (diff > max) max = diff;
 				else if (diff < min) min = diff;
         // Save value
+
         data->at(index) = diff;
 
 			}
@@ -149,6 +147,9 @@ bool ENLILReader::ReadFile(const std::string &_filename,
 
   dataObject_->SetMin(min);
 	dataObject_->SetMax(max);
+
+  std::cout << "Max value: " << max << std::endl;
+  std::cout << "Min value: " << min << std::endl;
 
   std::cout << "Processing... 100%\n";
 

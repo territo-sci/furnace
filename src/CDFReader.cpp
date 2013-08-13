@@ -69,6 +69,9 @@ bool CDFReader::ReadFolder() {
 		timestep++;
 	}
 
+  // Normalize
+ // dataObject_->Normalize();
+
 	return true;
 	
 }	

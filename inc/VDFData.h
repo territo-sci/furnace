@@ -35,6 +35,7 @@ public:
 	void SetMax(float _max);
 	float Min() const { return min_; }
 	float Max() const { return max_; }
+  void Normalize();
 	unsigned int NumVoxelsPerTimestep() const { return numVoxelsPerTimestep_; }
   // Return first index in data vector for a specific frame
 	unsigned int TimestepOffset(unsigned int _timestep) const {

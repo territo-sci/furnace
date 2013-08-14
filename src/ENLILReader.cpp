@@ -131,7 +131,10 @@ bool ENLILReader::ReadFile(const std::string &_filename,
                                                rPh,
                                                thetaPh,
                                                phiPh);
-					diff = rho - rho_back;
+
+          // Choose rho or the difference between rho and rho_back here
+          diff = rho;
+					//diff = rho - rho_back;
           if (diff < 0.f) diff = 0.f;
         }
 				// Update max/min

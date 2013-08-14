@@ -8,9 +8,9 @@
 int main() {
   osp::Furnace *furnace = osp::Furnace::New();
   furnace->SetModelType(osp::Furnace::ENLIL);
-  furnace->SetDimensions(128, 128, 128);
+  furnace->SetDimensions(512, 512, 512);
 	furnace->SetPath("/home/vsand/OpenSpace/CDFData/test_32/");
-  furnace->SetOutFilename("/home/vsand/OpenSpace/enlil_128_32_sph_diff.vdf");
+  furnace->SetOutFilename("/home/vsand/OpenSpace/enlil_512_32_sph_rho.vdf");
   furnace->ReadFolder();
   furnace->Write();
   delete furnace;

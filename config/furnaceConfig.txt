@@ -1,0 +1,6 @@
+source_folder	/home/vsand/OpenSpace/CDFData/test_32/
+out_filename	/home/vsand/OpenSpace/enlil_512_512_512_32_sph.vdf
+
+dimensions 	512 512 512
+
+model_name	ENLIL

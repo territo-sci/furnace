@@ -1,86 +1,81 @@
 /*
- * Furnace.cpp
+ * Author: Victor Sand (victor.sand@gmail.com)
  *
- *  Created on: Apr 5, 2013
- *      Author: vsand
  */
 
 #include <Furnace.h>
-#include <VDFData.h>
-#include <CDFReader.h>
+#include <VolumeReader.h>
 #include <ENLILReader.h>
-#include <VDFWriter.h>
 #include <iostream>
 
 using namespace osp;
+
+Furnace::Furnace() 
+  : hasRead_(false), 
+    volumeReader_(NULL), 
+    sourceFolder_("NotSet"), 
+    outFilename_("NotSet") {
+}
+
+Furnace::~Furnace() {
+  if (volumeReader_) delete volumeReader_;
+}
 
 Furnace * Furnace::New() {
   return new Furnace();
 }
 
-Furnace::Furnace() : VDFWriter_(VDFWriter::New()),
-                     CDFReader_(NULL),
-                     modelType_(Furnace::NO_MODEL) { }
-
-Furnace::~Furnace() {
-  if (VDFWriter_ != NULL) delete VDFWriter_;
-  if (CDFReader_ != NULL) delete CDFReader_;
-}
-
-void Furnace::SetModelType(ModelType _modelType) {
-  modelType_ = _modelType;
-  // Clean up any old readers
-  if (CDFReader_ != NULL) delete CDFReader_;
-  // Set the new reader
-  switch (_modelType) {
-    case ENLIL:
-      CDFReader_ = ENLILReader::New();
-      break;
-    default:
-      std::cout << "SetModelType(): Invalid type\n";
-      break;
-  }
-}
-
-void Furnace::SetPath(const std::string &_path) {
-  if (CDFReader_ != NULL) {
-    CDFReader_->SetPath(_path);
-  } else {
-    std::cout << "SetInFilename(): CDFReader not set\n";
-  }
+void Furnace::SetSourceFolder(const std::string &_sourceFolder) {
+  sourceFolder_ = _sourceFolder;
 }
 
 void Furnace::SetOutFilename(const std::string &_outFilename) {
-  if (VDFWriter_ == NULL) {
-    std::cout << "Furnace::Read(): VDFWriter not set\n";
-  }
-  VDFWriter_->SetOutFilename(_outFilename);
+  outFilename_ = _outFilename;
 }
 
 void Furnace::SetDimensions(unsigned int _xDim,
                             unsigned int _yDim,
                             unsigned int _zDim) {
-  CDFReader_->DataObject()->SetDimensions(_xDim, _yDim, _zDim);
+  if (!volumeReader_) {
+    std::cerr << "Trying to set dimensions without a reader" << std::endl;
+  } else {
+    volumeReader_->SetDimensions(_xDim, _yDim, _zDim);
+  }
 }
 
 bool Furnace::ReadFolder() {
-  if (modelType_== Furnace::NO_MODEL) {
-    std::cout << "Furnace::Read(): Model type not set\n";
+  if (!volumeReader_) {
+    std::cerr << "Cannot read folder without a reader" << std::endl;
     return false;
   }
-
-  if (CDFReader_ == NULL) {
-    std::cout << "Furnace::Reader() : CDFReader is NULL\n";
-    return false;
+  if (!volumeReader_->ReadFolder(sourceFolder_)) {
+    std::cerr << "Failed to read folder " << sourceFolder_ << std::endl;
   }
-  return CDFReader_->ReadFolder();
+  hasRead_ = true;
+  return true;
 }
 
 bool Furnace::Write() {
-  if (VDFWriter_ == NULL) {
-    std::cout << "Furnace::Write(): VDFWriter not set\n";
+  if (!hasRead_) {
+    std::cerr << "Can't write before having read" << std::endl;
     return false;
   }
-  VDFWriter_->SetDataObject(CDFReader_->DataObject());
-  return VDFWriter_->Write();
+  return volumeReader_->Write(outFilename_);
+}
+
+bool Furnace::SetModelType(ModelType _modelType) {
+
+  if (volumeReader_) {
+    std::cout << "Warning: Model already set" << std::endl;
+    delete volumeReader_;
+  }
+
+  if (_modelType == ENLIL) {
+    volumeReader_ = ENLILReader::New();
+  } else {
+    std::cerr << "Unknown model type" << std::endl;
+    return false;
+  }
+
+  return true;
 }

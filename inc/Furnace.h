@@ -1,8 +1,6 @@
 /*
- * Furnace.h
+ * Author: Victor Sand (victor.sand@gmail.com)
  *
- *  Created on: Apr 5, 2013
- *      Author: vsand
  */
 
 #ifndef FURNACE_H_
@@ -12,35 +10,48 @@
 
 namespace osp {
 
-class CDFReader;
-class VDFWriter;
+class VolumeReader;
 
 class Furnace {
 public:
-  // List all the supported model types
+  static Furnace * New();
+  ~Furnace();
+  
+  // List all supported model types
   enum ModelType {
     NO_MODEL = 0,
     ENLIL
   };
-  static Furnace * New();
-  ~Furnace();
-  // Setters for variables that are not read from file
-  void SetModelType(ModelType _modelType);
-	void SetPath(const std::string &_path);
-  void SetOutFilename(const std::string &_outFilename);
+
+  // Set model type and create a corresponding VolumeReader subclass instance
+  bool SetModelType(ModelType _modelType);
+  // Setters
   void SetDimensions(unsigned int _xDim,
                      unsigned int _yDim,
                      unsigned int _zDim);
-  // Methods
+  void SetSourceFolder(const std::string &_sourceFolder);
+  void SetOutFilename(const std::string &_outFilename);
+  // Read input folder using VolumeReader instance
   bool ReadFolder();
+  // Write read variables to output using VolumeReader instance
   bool Write();
+
 private:
-  ModelType modelType_;
   Furnace();
-  VDFWriter *VDFWriter_;
-  CDFReader *CDFReader_;
+  Furnace(const Furnace&);
+  
+  // Paths
+  std::string sourceFolder_;
+  std::string outFilename_;
+
+  // State varibles
+  bool hasRead_;
+
+  // Instance of reader (set by SetModelType() function)
+  VolumeReader *volumeReader_;
+
 };
 
-}
+} // namespace
 
-#endif /* FURNACE_H_ */
+#endif

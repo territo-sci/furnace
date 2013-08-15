@@ -1,6 +1,7 @@
 source_folder	/home/vsand/OpenSpace/CDFData/test_32/
-out_filename	/home/vsand/OpenSpace/enlil_512_512_512_32_sph.vdf
+out_filename	/home/vsand/OpenSpace/enlil_128_128_128_32.vdf
 
-dimensions 	512 512 512
+dimensions 	128 128 128
 
 model_name	ENLIL
+grid_typr	spherical

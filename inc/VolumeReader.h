@@ -1,6 +1,15 @@
 /*
  * Author: Victor Sand (victor.sand@gmail.com);
  *
+ * Base class for reading (and later writing) volume data. The function
+ * ReadFolder() needs to be implemented in subclasses, and the standard Write()
+ * function may be overridden if specializations are needed in the output
+ * file format. 
+ * 
+ * ReadFolder() reads a folder with one or more files of source data.
+ *
+ * Note that this class also defines the file format!
+ *
  */
 
 #ifndef VOLUMEREADER_H_
@@ -27,25 +36,31 @@ public:
                      unsigned int _yDim,
                      unsigned int _zDim);
 
+  // 0 for cartesian
+  // 1 for spherical
+  void SetGridType(unsigned int _gridType);
+
 protected:
   VolumeReader();
   VolumeReader(const VolumeReader&);
 
-  // State
-  bool hasRead_;
-
   // Data to write
-  unsigned int dataDimensionality_; // Not currently used (always 1)
+  unsigned int gridType_; 
   unsigned int numTimesteps_;
   unsigned int xDim_;
   unsigned int yDim_;
   unsigned int zDim_;
-  unsigned int numVoxelsPerTimestep_;
   std::vector<float> data_;
 
-  // If the data needs to be normalized
+  // Num voxels for one frame
+  unsigned int numVoxelsPerTimestep_;
+
+  // For normalization etc
   float min_;
   float max_;
+  
+  // State
+  bool hasRead_;
 };
 
 } // namespace

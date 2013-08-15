@@ -20,6 +20,8 @@ int main() {
   unsigned int xDim = 0, yDim = 0, zDim = 0;
   std::string modelName = "";
   osp::Furnace::ModelType modelType = osp::Furnace::NO_MODEL;
+  std::string gridName = "";
+  osp::Furnace::GridType gridType = osp::Furnace::NO_GRID;
   
   std::string config = "config/furnaceConfig.txt";
   std::ifstream in;
@@ -43,6 +45,16 @@ int main() {
         ss >> sourceFolder;
       } else if (var == "out_filename") {
         ss >> outFilename;
+      } else if (var == "grid_type") {
+        ss >> gridName;
+        if (gridName == "cartesian") {
+          gridType = osp::Furnace::CARTESIAN;
+        } else if (gridName == "spherical") {
+          gridType = osp::Furnace::SPHERICAL;
+        } else {
+          std::cerr << "Grid type " << gridName << " unknown" << std::endl;
+          exit(1);
+        }
       } else if (var == "dimensions") {
         ss >> xDim;
         ss >> yDim;
@@ -68,6 +80,7 @@ int main() {
   std::cout << "Out filename: " << outFilename << std::endl;
   std::cout << "Dimensions: " << xDim << " " << yDim << " " << zDim<<std::endl;
   std::cout << "Model: " << modelName << std::endl;
+  std::cout << "Grid: " << gridName << std::endl;
 
   // Create a Furnace instance 
   osp::Furnace *furnace = osp::Furnace::New();
@@ -84,6 +97,7 @@ int main() {
     std::cerr << "Failed to set model type" << std::endl;
     exit(1);
   }
+  furnace->SetGridType(gridType);
   furnace->SetDimensions(xDim, yDim, zDim);
   furnace->SetSourceFolder(sourceFolder);
   furnace->SetOutFilename(outFilename);

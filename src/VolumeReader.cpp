@@ -12,7 +12,7 @@
 using namespace osp;
 
 VolumeReader::VolumeReader() 
-  : dataDimensionality_(1), 
+  : gridType_(1), 
     numTimesteps_(0),
     xDim_(0), 
     yDim_(0), 
@@ -32,6 +32,10 @@ void VolumeReader::SetDimensions(unsigned int _xDim,
   yDim_ = _yDim;
   zDim_ = _zDim;
   numVoxelsPerTimestep_ = xDim_*yDim_*zDim_;
+}
+
+void VolumeReader::SetGridType(unsigned int _gridType) {
+  gridType_ = _gridType;
 }
 
 bool VolumeReader::Write(const std::string &_outFilename) {
@@ -56,7 +60,12 @@ bool VolumeReader::Write(const std::string &_outFilename) {
     return false;
   }
 
-  out.write(reinterpret_cast<char*>(&dataDimensionality_), sizeof(unsigned int));
+  std::cout << "Writing data: " << std::endl;
+  std::cout << "Grid type: " << gridType_ << std::endl;
+  std::cout << "Num timesteps: " << numTimesteps_ << std::endl;
+  std::cout << "Dimensions: "<<xDim_<< " " << yDim_<< " " << zDim_<< std::endl;
+
+  out.write(reinterpret_cast<char*>(&gridType_), sizeof(unsigned int));
   out.write(reinterpret_cast<char*>(&numTimesteps_), sizeof(unsigned int));
   out.write(reinterpret_cast<char*>(&xDim_), sizeof(unsigned int));
   out.write(reinterpret_cast<char*>(&yDim_), sizeof(unsigned int));

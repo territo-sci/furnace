@@ -33,6 +33,10 @@ void Furnace::SetOutFilename(const std::string &_outFilename) {
   outFilename_ = _outFilename;
 }
 
+void Furnace::SetGridType(GridType _gridType) {
+  volumeReader_->SetGridType(static_cast<unsigned int>(_gridType));
+}
+
 void Furnace::SetDimensions(unsigned int _xDim,
                             unsigned int _yDim,
                             unsigned int _zDim) {
@@ -57,7 +61,7 @@ bool Furnace::ReadFolder() {
 
 bool Furnace::Write() {
   if (!hasRead_) {
-    std::cerr << "Can't write before having read" << std::endl;
+    std::cerr << "Can't write before reading" << std::endl;
     return false;
   }
   return volumeReader_->Write(outFilename_);

@@ -19,12 +19,22 @@ public:
   
   // List all supported model types
   enum ModelType {
-    NO_MODEL = 0,
-    ENLIL
+    ENLIL = 0,
+    NO_MODEL
+  };
+
+  // List all supported grip types
+  enum GridType {
+    CARTESIAN = 0,
+    SPHERICAL = 1,
+    NO_GRID
   };
 
   // Set model type and create a corresponding VolumeReader subclass instance
   bool SetModelType(ModelType _modelType);
+  // Set grid type 
+  // Only affects output variable, not reading itself unless implemented
+  void SetGridType(GridType _gridType);
   // Setters
   void SetDimensions(unsigned int _xDim,
                      unsigned int _yDim,
@@ -40,7 +50,6 @@ private:
   Furnace();
   Furnace(const Furnace&);
   
-  // Paths
   std::string sourceFolder_;
   std::string outFilename_;
 

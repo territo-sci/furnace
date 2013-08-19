@@ -181,6 +181,30 @@ FurnaceApp.cpp.s:
 	cd /home/vsand/OpenSpace/Furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/FurnaceApp.cpp.s
 .PHONY : FurnaceApp.cpp.s
 
+PointCloudReader.o: PointCloudReader.cpp.o
+.PHONY : PointCloudReader.o
+
+# target to build an object file
+PointCloudReader.cpp.o:
+	cd /home/vsand/OpenSpace/Furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o
+.PHONY : PointCloudReader.cpp.o
+
+PointCloudReader.i: PointCloudReader.cpp.i
+.PHONY : PointCloudReader.i
+
+# target to preprocess a source file
+PointCloudReader.cpp.i:
+	cd /home/vsand/OpenSpace/Furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.i
+.PHONY : PointCloudReader.cpp.i
+
+PointCloudReader.s: PointCloudReader.cpp.s
+.PHONY : PointCloudReader.s
+
+# target to generate assembly for a file
+PointCloudReader.cpp.s:
+	cd /home/vsand/OpenSpace/Furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.s
+.PHONY : PointCloudReader.cpp.s
+
 VolumeReader.o: VolumeReader.cpp.o
 .PHONY : VolumeReader.o
 
@@ -223,6 +247,9 @@ help:
 	@echo "... FurnaceApp.o"
 	@echo "... FurnaceApp.i"
 	@echo "... FurnaceApp.s"
+	@echo "... PointCloudReader.o"
+	@echo "... PointCloudReader.i"
+	@echo "... PointCloudReader.s"
 	@echo "... VolumeReader.o"
 	@echo "... VolumeReader.i"
 	@echo "... VolumeReader.s"

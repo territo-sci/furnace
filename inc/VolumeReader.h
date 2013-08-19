@@ -28,9 +28,9 @@ public:
   // Read/write functions for subclasses to implement
   // Read contents of a given folder
   virtual bool ReadFolder(const std::string &_sourceFolder) = 0;
-  // Write read data to specified output file
+  // Write read data to specified output folder 
   // May be overridden if needed
-  virtual bool Write(const std::string &_outFilename);
+  virtual bool Write(const std::string &_destFolder);
 
   void SetDimensions(unsigned int _xDim,
                      unsigned int _yDim,
@@ -50,6 +50,8 @@ protected:
   unsigned int xDim_;
   unsigned int yDim_;
   unsigned int zDim_;
+
+  // Stores data in one time step before writing to disk
   std::vector<float> data_;
 
   // Num voxels for one frame

@@ -1,7 +1,7 @@
-source_folder	/home/vsand/OpenSpace/CDFData/test_32/
-out_filename	/home/vsand/OpenSpace/enlil_128_128_128_32.vdf
+source_folder	/home/vsand/OpenSpace/PointCloudData/
+out_filename	/home/vsand/OpenSpace/pointcloud_64.vdf
 
-dimensions 	128 128 128
+dimensions 	128 128 128 
 
-model_name	ENLIL
-grid_type	spherical
+model_name	pointcloud
+grid_type	cartesian

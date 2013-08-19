@@ -20,6 +20,7 @@ public:
   // List all supported model types
   enum ModelType {
     ENLIL = 0,
+    POINTCLOUD,
     NO_MODEL
   };
 

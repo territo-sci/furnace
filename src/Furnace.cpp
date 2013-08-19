@@ -6,6 +6,7 @@
 #include <Furnace.h>
 #include <VolumeReader.h>
 #include <ENLILReader.h>
+#include <PointCloudReader.h>
 #include <iostream>
 
 using namespace osp;
@@ -76,6 +77,8 @@ bool Furnace::SetModelType(ModelType _modelType) {
 
   if (_modelType == ENLIL) {
     volumeReader_ = ENLILReader::New();
+  } else if (_modelType == POINTCLOUD) {
+    volumeReader_ = PointCloudReader::New();
   } else {
     std::cerr << "Unknown model type" << std::endl;
     return false;

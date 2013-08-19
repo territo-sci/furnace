@@ -92,9 +92,32 @@ src/CMakeFiles/FurnaceApp.dir/ENLILReader.cpp.o.provides: src/CMakeFiles/Furnace
 
 src/CMakeFiles/FurnaceApp.dir/ENLILReader.cpp.o.provides.build: src/CMakeFiles/FurnaceApp.dir/ENLILReader.cpp.o
 
+src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o: src/CMakeFiles/FurnaceApp.dir/flags.make
+src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o: src/PointCloudReader.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/vsand/OpenSpace/Furnace/CMakeFiles $(CMAKE_PROGRESS_3)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o"
+	cd /home/vsand/OpenSpace/Furnace/src && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o -c /home/vsand/OpenSpace/Furnace/src/PointCloudReader.cpp
+
+src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.i"
+	cd /home/vsand/OpenSpace/Furnace/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/vsand/OpenSpace/Furnace/src/PointCloudReader.cpp > CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.i
+
+src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.s"
+	cd /home/vsand/OpenSpace/Furnace/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/vsand/OpenSpace/Furnace/src/PointCloudReader.cpp -o CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.s
+
+src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o.requires:
+.PHONY : src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o.requires
+
+src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o.provides: src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o.requires
+	$(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o.provides.build
+.PHONY : src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o.provides
+
+src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o.provides.build: src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o
+
 src/CMakeFiles/FurnaceApp.dir/VolumeReader.cpp.o: src/CMakeFiles/FurnaceApp.dir/flags.make
 src/CMakeFiles/FurnaceApp.dir/VolumeReader.cpp.o: src/VolumeReader.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/vsand/OpenSpace/Furnace/CMakeFiles $(CMAKE_PROGRESS_3)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/vsand/OpenSpace/Furnace/CMakeFiles $(CMAKE_PROGRESS_4)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/CMakeFiles/FurnaceApp.dir/VolumeReader.cpp.o"
 	cd /home/vsand/OpenSpace/Furnace/src && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/FurnaceApp.dir/VolumeReader.cpp.o -c /home/vsand/OpenSpace/Furnace/src/VolumeReader.cpp
 
@@ -117,7 +140,7 @@ src/CMakeFiles/FurnaceApp.dir/VolumeReader.cpp.o.provides.build: src/CMakeFiles/
 
 src/CMakeFiles/FurnaceApp.dir/Furnace.cpp.o: src/CMakeFiles/FurnaceApp.dir/flags.make
 src/CMakeFiles/FurnaceApp.dir/Furnace.cpp.o: src/Furnace.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/vsand/OpenSpace/Furnace/CMakeFiles $(CMAKE_PROGRESS_4)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/vsand/OpenSpace/Furnace/CMakeFiles $(CMAKE_PROGRESS_5)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/CMakeFiles/FurnaceApp.dir/Furnace.cpp.o"
 	cd /home/vsand/OpenSpace/Furnace/src && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/FurnaceApp.dir/Furnace.cpp.o -c /home/vsand/OpenSpace/Furnace/src/Furnace.cpp
 
@@ -142,6 +165,7 @@ src/CMakeFiles/FurnaceApp.dir/Furnace.cpp.o.provides.build: src/CMakeFiles/Furna
 FurnaceApp_OBJECTS = \
 "CMakeFiles/FurnaceApp.dir/FurnaceApp.cpp.o" \
 "CMakeFiles/FurnaceApp.dir/ENLILReader.cpp.o" \
+"CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o" \
 "CMakeFiles/FurnaceApp.dir/VolumeReader.cpp.o" \
 "CMakeFiles/FurnaceApp.dir/Furnace.cpp.o"
 
@@ -150,6 +174,7 @@ FurnaceApp_EXTERNAL_OBJECTS =
 
 FurnaceApp: src/CMakeFiles/FurnaceApp.dir/FurnaceApp.cpp.o
 FurnaceApp: src/CMakeFiles/FurnaceApp.dir/ENLILReader.cpp.o
+FurnaceApp: src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o
 FurnaceApp: src/CMakeFiles/FurnaceApp.dir/VolumeReader.cpp.o
 FurnaceApp: src/CMakeFiles/FurnaceApp.dir/Furnace.cpp.o
 FurnaceApp: /home/vsand/OpenSpace/common_external/boost_1_53_0/stage/lib/libboost_system.so
@@ -165,6 +190,7 @@ src/CMakeFiles/FurnaceApp.dir/build: FurnaceApp
 
 src/CMakeFiles/FurnaceApp.dir/requires: src/CMakeFiles/FurnaceApp.dir/FurnaceApp.cpp.o.requires
 src/CMakeFiles/FurnaceApp.dir/requires: src/CMakeFiles/FurnaceApp.dir/ENLILReader.cpp.o.requires
+src/CMakeFiles/FurnaceApp.dir/requires: src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o.requires
 src/CMakeFiles/FurnaceApp.dir/requires: src/CMakeFiles/FurnaceApp.dir/VolumeReader.cpp.o.requires
 src/CMakeFiles/FurnaceApp.dir/requires: src/CMakeFiles/FurnaceApp.dir/Furnace.cpp.o.requires
 .PHONY : src/CMakeFiles/FurnaceApp.dir/requires

@@ -63,6 +63,8 @@ int main() {
         ss >> modelName;
         if (modelName == "ENLIL") {
           modelType = osp::Furnace::ENLIL;
+        } else if (modelName == "pointcloud") {
+          modelType = osp::Furnace::POINTCLOUD;
         } else {
           std::cerr << "Model name " << modelName << " unknown" << std::endl;
           exit(1);

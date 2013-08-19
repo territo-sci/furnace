@@ -25,12 +25,8 @@ public:
 
   virtual ~VolumeReader();
 
-  // Read/write functions for subclasses to implement
-  // Read contents of a given folder
-  virtual bool ReadFolder(const std::string &_sourceFolder) = 0;
-  // Write read data to specified output folder 
-  // May be overridden if needed
-  virtual bool Write(const std::string &_destFolder);
+  virtual bool ProcessFolder(const std::string &_sourceFolder,
+                             const std::string &_destFolder) = 0;
 
   void SetDimensions(unsigned int _xDim,
                      unsigned int _yDim,
@@ -43,6 +39,26 @@ public:
 protected:
   VolumeReader();
   VolumeReader(const VolumeReader&);
+
+  // Write (temporary) header
+  bool WriteHeader(const std::string &_destFolder);
+
+  // Gather values from temporary files, normalize and write
+  // to single output file
+  bool WriteFinal(const std::string &_destFolder);
+
+  // Delete temporary files
+  bool DeleteTempFiles(const std::string &_destFolder);
+
+  // Names for (temporary) header and timestep files
+  const std::string tempSuffix_ = ".tmp";
+  const std::string headerFilename_ = "header";
+  const std::string headerSuffix_ = ".tmp";
+  const std::string timestepFilename_ = "timestep_";
+  const std::string timestepSuffix_ = ".tmp";
+  
+  // Name for final file
+  const std::string finalFilename = "volume.vdf";
 
   // Data to write
   unsigned int gridType_; 
@@ -57,7 +73,7 @@ protected:
   // Num voxels for one frame
   unsigned int numVoxelsPerTimestep_;
 
-  // For normalization etc
+  // For normalization step 
   float min_;
   float max_;
   

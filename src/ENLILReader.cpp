@@ -6,6 +6,7 @@
 #include <ENLILReader.h>
 #include <ccmc/Kameleon.h>
 #include <iostream>
+#include <fstream>
 #include <boost/filesystem.hpp>
 #include <set>
 
@@ -31,7 +32,8 @@ ENLILReader::~ENLILReader() {
   if (interpolator_) delete interpolator_;
 }
 
-bool ENLILReader::ReadFolder(const std::string &_sourceFolder) {
+bool ENLILReader::ProcessFolder(const std::string &_sourceFolder,
+                                const std::string &_destFolder) {
   
   // See if path exists
   if (!fs::exists(_sourceFolder)) {
@@ -61,37 +63,50 @@ bool ENLILReader::ReadFolder(const std::string &_sourceFolder) {
   // Set number of timesteps (number of files in folder)
   numTimesteps_ = static_cast<unsigned int>(filenames.size());
   std::cout << "Found " << numTimesteps_ << " timesteps" << std::endl;
-  // Allocate data
-  size_t nts = static_cast<size_t>(numTimesteps_);
+  // Allocate space for one timestep
   size_t nvpts = static_cast<size_t>(numVoxelsPerTimestep_);
-  size_t s = nts*nvpts;
-  std::cout << "Num voxels total: " << s << std::endl;
-  data_.resize(s);
-  std::cout << "Data array size: " << data_.size() << std::endl;
+  data_.resize(nvpts);
 
-  // Read the individual timesteps
+  // Write header file
+  if (!WriteHeader(_destFolder)) {
+    std::cerr << "Failed to write header" << std::endl;
+    return false;
+  }
+
+  // process the individual timesteps
   unsigned int timestep = 0;
   for (auto it=filenames.begin(); it!=filenames.end(); ++it) {
-    if (!ReadFile(it->string(), timestep++)) {
+    if (!ProcessFile(it->string(), _destFolder, timestep++)) {
       std::cerr << "Failed to read timestep " << timestep << std::endl;
       return false;
     }
   }
 
-  // Normalize
-  std::cout << "Normalizing" << std::endl;
-  for (auto it=data_.begin(); it!=data_.end(); ++it) {
-    *it = (*it - min_)/(max_ - min_);
+  // Gather temp files, normalize and write to single output
+  if (!WriteFinal(_destFolder)) {
+    std::cerr << "Failed to write final file" << std::endl;
+    return false;
   }
 
-  std::cout << "Reading complete" << std::endl;
+  // Delete temp files
+  DeleteTempFiles(_destFolder);
 
-  hasRead_ = true;
+  // Normalize
+  //std::cout << "Normalizing" << std::endl;
+  //for (auto it=data_.begin(); it!=data_.end(); ++it) {
+  //  *it = (*it - min_)/(max_ - min_);
+  //  }
+
+  std::cout << "Processing complete" << std::endl;
+
   return true;
 }
 
-bool ENLILReader::ReadFile(const std::string &_filename, 
-                           unsigned int _timestep) {
+
+
+bool ENLILReader::ProcessFile(const std::string &_filename, 
+                              const std::string &_destFolder,
+                              unsigned int _timestep) {
 
   // Open file using Kameleon instance
   if (kameleon_->open(_filename) != ccmc::FileReader::OK) {
@@ -121,26 +136,20 @@ bool ENLILReader::ReadFile(const std::string &_filename,
   float phiMax =
     kameleon_->getVariableAttribute("phi", "actual_max").getAttributeFloat();
 
-  // Read timestep
-  std::cout << "Reading timestep " << _timestep+1 << "/" << numTimesteps_ <<
-    std::endl;
-
-  // Timestep offset
-  unsigned int offset = numVoxelsPerTimestep_ * _timestep;
-
   // Loop over volume
   // [x, y, z] -> [r, theta, phi] for spherical model
   // TODO: Parallelize
   for (unsigned int phi=0; phi<zDim_; ++phi) {
     unsigned int progress = (unsigned int)(((float)phi/(float)zDim_)*100.f);
     if (progress % 10 == 0) {
-      std::cout << "Processing... " << progress << "%\r" << std::flush;
+      std::cout << "Processing timestep " << _timestep+1 << "/" 
+        << numTimesteps_ << ", " << progress << "%\r" << std::flush;
     }
     for (unsigned int theta=0; theta<yDim_; ++theta) {
       for (unsigned int r=0; r<xDim_; ++r) {
   
         // Calculate array index
-        unsigned int index = offset + r + theta*xDim_ + phi*xDim_*yDim_;
+        unsigned int index = r + theta*xDim_ + phi*xDim_*yDim_;
 
         // Put r in the [0..sqrt(3)] range
         float rNorm = sqrt(3.0)*(float)r/(float)(xDim_-1);
@@ -198,14 +207,34 @@ bool ENLILReader::ReadFile(const std::string &_filename,
           min_ = diff;
         }
 
-        // Save value
         data_[index] = diff;
 
       } // r
     } // theta
   } // phi
 
-  std::cout << "Processing... 100%" << std::endl;
-  
+  std::cout<<"                                              \r" <<std::flush;
+
+  // Write to file
+
+  std::string timestepStr = boost::lexical_cast<std::string>(_timestep);
+  std::string fullPath = _destFolder + timestepFilename_ + timestepStr +
+    timestepSuffix_;
+
+
+  std::fstream out;
+  out.open(fullPath.c_str(),
+    std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
+  if (!out.is_open()) {
+    std::cerr << "Failed to open " << fullPath << std::endl;
+    return false;
+  }
+
+  out.write(reinterpret_cast<char*>(&data_[0]), 
+            sizeof(float)*numVoxelsPerTimestep_);
+
+  out.close();
+
+
   return true;
 }

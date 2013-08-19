@@ -41,21 +41,16 @@ public:
                      unsigned int _yDim,
                      unsigned int _zDim);
   void SetSourceFolder(const std::string &_sourceFolder);
-  void SetOutFilename(const std::string &_outFilename);
-  // Read input folder using VolumeReader instance
-  bool ReadFolder();
-  // Write read variables to output using VolumeReader instance
-  bool Write();
+  void SetDestFolder(const std::string &_destFolder);
+  // Read input and write to output using VolumeReader instance
+  bool ProcessFolder();
 
 private:
   Furnace();
   Furnace(const Furnace&);
   
   std::string sourceFolder_;
-  std::string outFilename_;
-
-  // State varibles
-  bool hasRead_;
+  std::string destFolder_;
 
   // Instance of reader (set by SetModelType() function)
   VolumeReader *volumeReader_;

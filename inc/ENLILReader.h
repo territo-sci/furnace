@@ -24,16 +24,19 @@ public:
   ~ENLILReader();
 
   // Read a folder with one CDF file per timestep
-  virtual bool ReadFolder(const std::string &_sourceFolder);
+  virtual bool ProcessFolder(const std::string &_sourceFolder,
+                             const std::string &_destFolder);
 
 private:
   ENLILReader();
   ENLILReader(ccmc::Kameleon *_kameleon);
   ENLILReader(const ENLILReader&);
 
-  // Read individual timestep (called by ReadFolder)
-  bool ReadFile(const std::string &_filename, unsigned int _timestep);
-
+  // Read individual timesteps from CDF files and write result to new file
+  bool ProcessFile(const std::string &_filename,
+                   const std::string &_destFolder,
+                   unsigned int _timestep);
+  
   // CCMC parts
   ccmc::Kameleon *kameleon_;
   // Interpolator can't be created until file has been opened!

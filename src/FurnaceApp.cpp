@@ -16,7 +16,7 @@ int main() {
 
   // Read config (very simple implementation) 
   std::string sourceFolder = "";
-  std::string outFilename = "";
+  std::string destFolder = "";
   unsigned int xDim = 0, yDim = 0, zDim = 0;
   std::string modelName = "";
   osp::Furnace::ModelType modelType = osp::Furnace::NO_MODEL;
@@ -43,8 +43,8 @@ int main() {
       // Read value
       if (var == "source_folder") {
         ss >> sourceFolder;
-      } else if (var == "out_filename") {
-        ss >> outFilename;
+      } else if (var == "dest_folder") {
+        ss >> destFolder;
       } else if (var == "grid_type") {
         ss >> gridName;
         if (gridName == "cartesian") {
@@ -79,7 +79,7 @@ int main() {
   // Print chosen variables 
   std::cout << "Running Furnace with the following settings: " << std::endl;
   std::cout << "Source folder: " << sourceFolder << std::endl;
-  std::cout << "Out filename: " << outFilename << std::endl;
+  std::cout << "Destination folder: " << destFolder << std::endl;
   std::cout << "Dimensions: " << xDim << " " << yDim << " " << zDim<<std::endl;
   std::cout << "Model: " << modelName << std::endl;
   std::cout << "Grid: " << gridName << std::endl;
@@ -102,19 +102,14 @@ int main() {
   furnace->SetGridType(gridType);
   furnace->SetDimensions(xDim, yDim, zDim);
   furnace->SetSourceFolder(sourceFolder);
-  furnace->SetOutFilename(outFilename);
+  furnace->SetDestFolder(destFolder);
 
   // Read folder
-  if (!furnace->ReadFolder()) {
-    std::cerr << "Failed to read folder: " << sourceFolder << std::endl;
+  if (!furnace->ProcessFolder()) {
+    std::cerr << "Furnace failed to process folder" << std::endl;
     exit(1);
   }
 
-  // Write to output
-  if (!furnace->Write()) {
-    std::cerr << "Failed to write to output: " << outFilename << std::endl;
-    exit(1);
-  }
 
   // Clean up and exit
   delete furnace;

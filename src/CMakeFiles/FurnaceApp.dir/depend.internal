@@ -811,21 +811,35 @@ src/CMakeFiles/FurnaceApp.dir/Furnace.cpp.o
  /home/vsand/OpenSpace/Furnace/src/Furnace.cpp
  inc/ENLILReader.h
  inc/Furnace.h
+ inc/PointCloudReader.h
  inc/VolumeReader.h
 src/CMakeFiles/FurnaceApp.dir/FurnaceApp.cpp.o
  /home/vsand/OpenSpace/Furnace/src/FurnaceApp.cpp
  inc/Furnace.h
-src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o
- /home/vsand/OpenSpace/Furnace/src/PointCloudReader.cpp
+src/CMakeFiles/FurnaceApp.dir/VolumeReader.cpp.o
+ /home/vsand/OpenSpace/Furnace/src/VolumeReader.cpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/../libs/system/src/error_code.cpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/../libs/system/src/local_free_on_destruction.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/array.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/assert.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/cerrno.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/checked_delete.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/concept/assert.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/concept/detail/backward_compatibility.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/concept/detail/borland.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/concept/detail/concept_def.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/concept/detail/concept_undef.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/concept/detail/general.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/concept/detail/has_constraints.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/concept/detail/msvc.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/concept/usage.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/concept_check.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/config.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/config/abi_prefix.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/config/abi_suffix.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/config/auto_link.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/config/no_tr1/cmath.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/config/no_tr1/complex.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/config/no_tr1/memory.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/config/no_tr1/utility.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/config/posix_features.hpp
@@ -834,14 +848,17 @@ src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/config/select_stdlib_config.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/config/suffix.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/config/warning_disable.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/container/container_fwd.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/cstdint.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/current_function.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/detail/bitmask.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/detail/endian.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/detail/fenv.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/detail/indirect_traits.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/detail/interlocked.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/detail/is_function_ref_tester.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/detail/iterator.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/detail/lcast_precision.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/detail/limits.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/detail/scoped_enum_emulation.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/detail/sp_typeinfo.hpp
@@ -856,6 +873,7 @@ src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/filesystem/path_traits.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/functional/hash/hash_fwd.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/functional/hash_fwd.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/integer_traits.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/io/detail/quoted_manip.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/io/ios_state.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/io_fwd.hpp
@@ -865,11 +883,29 @@ src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/iterator/detail/enable_if.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/iterator/detail/facade_iterator_category.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/iterator/interoperable.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/iterator/iterator_adaptor.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/iterator/iterator_categories.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/iterator/iterator_concepts.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/iterator/iterator_facade.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/iterator/iterator_traits.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/iterator/reverse_iterator.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/lexical_cast.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/limits.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/math/policies/policy.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/math/special_functions/detail/fp_traits.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/math/special_functions/detail/round_fwd.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/math/special_functions/fpclassify.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/math/special_functions/math_fwd.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/math/special_functions/sign.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/math/tools/config.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/math/tools/promotion.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/math/tools/real_cast.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/math/tools/user.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/memory_order.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/O1_size.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/O1_size_fwd.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/advance.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/advance_fwd.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/always.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/and.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/apply.hpp
@@ -878,11 +914,21 @@ src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/arg.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/arg_fwd.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/assert.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/at.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/at_fwd.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/O1_size_impl.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/adl_barrier.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/advance_backward.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/advance_forward.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/arg_typedef.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/arithmetic_op.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/arity.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/arity_spec.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/at_impl.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/begin_end_impl.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/clear_impl.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/common_name_wknd.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/comparison_op.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/config/adl.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/config/arrays.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/config/bcc.hpp
@@ -892,6 +938,7 @@ src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/config/dmc_ambiguous_ctps.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/config/dtp.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/config/eti.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/config/forwarding.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/config/gcc.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/config/has_apply.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/config/has_xxx.hpp
@@ -908,26 +955,44 @@ src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/config/ttp.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/config/use_preprocessed.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/config/workaround.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/contains_impl.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/count_args.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/find_if_pred.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/fold_impl.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/fold_impl_body.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/full_lambda.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/has_apply.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/has_begin.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/has_rebind.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/has_size.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/has_tag.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/has_type.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/include_preprocessed.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/inserter_algorithm.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/integral_wrapper.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/is_msvc_eti_arg.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/iter_apply.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/iter_fold_if_impl.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/iter_fold_impl.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/lambda_arity_param.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/lambda_no_ctps.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/lambda_spec.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/lambda_support.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/largest_int.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/logical_op.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/msvc_dtw.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/msvc_eti_base.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/msvc_is_class.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/msvc_never_true.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/msvc_type.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/na.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/na_assert.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/na_fwd.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/na_spec.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/nested_type_wknd.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/nttp_decl.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/numeric_cast_utils.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/numeric_op.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/preprocessor/add.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/preprocessor/def_params_tail.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/preprocessor/default_params.hpp
@@ -940,42 +1005,122 @@ src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/preprocessor/repeat.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/preprocessor/sub.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/preprocessor/tuple.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/push_back_impl.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/push_front_impl.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/reverse_fold_impl.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/reverse_fold_impl_body.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/sequence_wrapper.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/size_impl.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/static_cast.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/template_arity.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/template_arity_fwd.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/traits_lambda_spec.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/type_wrapper.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/value_wknd.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/aux_/yes_no.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/back_inserter.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/begin_end.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/begin_end_fwd.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/bind.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/bind_fwd.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/bool.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/bool_fwd.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/clear.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/clear_fwd.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/comparison.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/contains.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/contains_fwd.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/deref.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/distance.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/distance_fwd.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/equal_to.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/eval_if.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/find.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/find_if.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/fold.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/front_inserter.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/greater.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/greater_equal.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/has_xxx.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/identity.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/if.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/inserter.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/int.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/int_fwd.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/integral_c.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/integral_c_fwd.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/integral_c_tag.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/is_placeholder.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/iter_fold.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/iter_fold_if.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/iterator_range.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/lambda.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/lambda_fwd.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/less.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/less_equal.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/limits/arity.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/limits/list.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/limits/unrolling.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/limits/vector.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/list.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/logical.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/long.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/long_fwd.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/multiplies.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/negate.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/next.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/next_prior.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/not.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/not_equal_to.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/numeric_cast.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/or.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/pair.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/placeholders.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/prior.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/protect.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/push_back.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/push_back_fwd.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/push_front.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/push_front_fwd.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/quote.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/remove_if.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/reverse_fold.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/same_as.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/sequence_tag.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/sequence_tag_fwd.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/size.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/size_fwd.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/size_t.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/size_t_fwd.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/tag.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/times.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/vector.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/void.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/mpl/void_fwd.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/next_prior.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/non_type.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/noncopyable.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/numeric/conversion/bounds.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/numeric/conversion/cast.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/numeric/conversion/conversion_traits.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/numeric/conversion/converter.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/numeric/conversion/converter_policies.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/numeric/conversion/detail/bounds.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/numeric/conversion/detail/conversion_traits.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/numeric/conversion/detail/converter.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/numeric/conversion/detail/int_float_mixture.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/numeric/conversion/detail/is_subranged.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/numeric/conversion/detail/meta.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/numeric/conversion/detail/numeric_cast_traits.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/numeric/conversion/detail/old_numeric_cast.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/numeric/conversion/detail/preprocessed/numeric_cast_traits_common.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/numeric/conversion/detail/preprocessed/numeric_cast_traits_long_long.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/numeric/conversion/detail/sign_mixture.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/numeric/conversion/detail/udt_builtin_mixture.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/numeric/conversion/int_float_mixture_enum.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/numeric/conversion/numeric_cast_traits.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/numeric/conversion/sign_mixture_enum.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/numeric/conversion/udt_builtin_mixture_enum.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/operators.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/arithmetic/add.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/arithmetic/dec.hpp
@@ -1003,11 +1148,14 @@ src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/detail/dmc/auto_rec.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/detail/is_binary.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/empty.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/enum.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/enum_params.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/enum_params_with_a_default.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/enum_shifted_params.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/expr_if.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/facilities/empty.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/facilities/identity.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/facilities/intercept.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/facilities/overload.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/identity.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/inc.hpp
@@ -1036,15 +1184,20 @@ src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/repetition/detail/edg/for.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/repetition/detail/for.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/repetition/detail/msvc/for.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/repetition/enum.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/repetition/enum_binary_params.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/repetition/enum_params.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/repetition/enum_params_with_a_default.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/repetition/enum_shifted_params.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/repetition/enum_trailing_params.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/repetition/for.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/repetition/repeat.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/seq/detail/split.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/seq/elem.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/seq/enum.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/seq/first_n.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/seq/fold_left.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/seq/for_each_i.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/seq/rest_n.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/seq/seq.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/seq/size.hpp
@@ -1058,6 +1211,39 @@ src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/tuple/to_list.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/variadic/elem.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/preprocessor/variadic/size.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/algorithm/equal.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/begin.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/concepts.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/config.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/const_iterator.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/detail/begin.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/detail/common.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/detail/const_iterator.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/detail/end.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/detail/extract_optional_type.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/detail/implementation_help.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/detail/iterator.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/detail/misc_concept.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/detail/remove_extent.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/detail/safe_bool.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/detail/sfinae.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/detail/size_type.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/detail/vc6/end.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/difference_type.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/distance.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/empty.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/end.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/functions.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/iterator.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/iterator_range_core.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/mutable_iterator.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/rbegin.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/rend.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/result_iterator.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/reverse_iterator.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/size.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/size_type.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/range/value_type.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/shared_ptr.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/smart_ptr/bad_weak_ptr.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/smart_ptr/detail/atomic_count.hpp
@@ -1104,6 +1290,7 @@ src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/smart_ptr/detail/yield_k.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/smart_ptr/shared_ptr.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/static_assert.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/swap.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/system/api_config.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/system/config.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/system/error_code.hpp
@@ -1115,14 +1302,17 @@ src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/add_pointer.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/add_reference.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/add_rvalue_reference.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/add_volatile.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/alignment_of.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/broken_compiler_spec.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/config.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/conversion_traits.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/decay.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/detail/bool_trait_def.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/detail/bool_trait_undef.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/detail/cv_traits_impl.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/detail/false_result.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/detail/has_binary_operator.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/detail/ice_and.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/detail/ice_eq.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/detail/ice_not.hpp
@@ -1138,6 +1328,8 @@ src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/detail/type_trait_undef.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/detail/wrap.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/detail/yes_no_type.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/has_left_shift.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/has_right_shift.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/ice.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/integral_constant.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/intrinsics.hpp
@@ -1145,12 +1337,15 @@ src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/is_arithmetic.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/is_array.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/is_base_and_derived.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/is_base_of.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/is_class.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/is_const.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/is_convertible.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/is_enum.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/is_float.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/is_floating_point.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/is_function.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/is_fundamental.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/is_integral.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/is_lvalue_reference.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/is_member_function_pointer.hpp
@@ -1162,9 +1357,12 @@ src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/is_rvalue_reference.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/is_same.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/is_scalar.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/is_signed.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/is_union.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/is_unsigned.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/is_void.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/is_volatile.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/make_unsigned.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/msvc/remove_bounds.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/msvc/remove_const.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/msvc/remove_cv.hpp
@@ -1179,9 +1377,6 @@ src/CMakeFiles/FurnaceApp.dir/PointCloudReader.cpp.o
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/type_traits/type_with_alignment.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/utility/addressof.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/utility/enable_if.hpp
+ /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/utility/swap.hpp
  /home/vsand/OpenSpace/common_external/boost_1_53_0/boost/version.hpp
- inc/PointCloudReader.h
- inc/VolumeReader.h
-src/CMakeFiles/FurnaceApp.dir/VolumeReader.cpp.o
- /home/vsand/OpenSpace/Furnace/src/VolumeReader.cpp
  inc/VolumeReader.h

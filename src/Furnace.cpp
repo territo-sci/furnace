@@ -12,10 +12,9 @@
 using namespace osp;
 
 Furnace::Furnace() 
-  : hasRead_(false), 
-    volumeReader_(NULL), 
-    sourceFolder_("NotSet"), 
-    outFilename_("NotSet") {
+  : volumeReader_(NULL), 
+    sourceFolder_("NotSet"),
+    destFolder_("NotSet") {
 }
 
 Furnace::~Furnace() {
@@ -30,8 +29,8 @@ void Furnace::SetSourceFolder(const std::string &_sourceFolder) {
   sourceFolder_ = _sourceFolder;
 }
 
-void Furnace::SetOutFilename(const std::string &_outFilename) {
-  outFilename_ = _outFilename;
+void Furnace::SetDestFolder(const std::string &_destFolder) {
+  destFolder_ = _destFolder;
 }
 
 void Furnace::SetGridType(GridType _gridType) {
@@ -48,25 +47,17 @@ void Furnace::SetDimensions(unsigned int _xDim,
   }
 }
 
-bool Furnace::ReadFolder() {
+bool Furnace::ProcessFolder() {
   if (!volumeReader_) {
-    std::cerr << "Cannot read folder without a reader" << std::endl;
+    std::cerr << "Cannot process folder without a reader" << std::endl;
     return false;
   }
-  if (!volumeReader_->ReadFolder(sourceFolder_)) {
-    std::cerr << "Failed to read folder " << sourceFolder_ << std::endl;
+  if (!volumeReader_->ProcessFolder(sourceFolder_, destFolder_)) {
+    std::cerr << "Failed to process folder " << sourceFolder_ << std::endl;
   }
-  hasRead_ = true;
   return true;
 }
 
-bool Furnace::Write() {
-  if (!hasRead_) {
-    std::cerr << "Can't write before reading" << std::endl;
-    return false;
-  }
-  return volumeReader_->Write(outFilename_);
-}
 
 bool Furnace::SetModelType(ModelType _modelType) {
 
@@ -77,8 +68,8 @@ bool Furnace::SetModelType(ModelType _modelType) {
 
   if (_modelType == ENLIL) {
     volumeReader_ = ENLILReader::New();
-  } else if (_modelType == POINTCLOUD) {
-    volumeReader_ = PointCloudReader::New();
+  //} else if (_modelType == POINTCLOUD) {
+  //  volumeReader_ = PointCloudReader::New();
   } else {
     std::cerr << "Unknown model type" << std::endl;
     return false;

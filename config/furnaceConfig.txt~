@@ -1,7 +1,7 @@
-source_folder	/home/vsand/OpenSpace/CDFData/test_32/
-dest_folder	/home/vsand/OpenSpace/ProcessedData/enlil_128_128_128_32
+source_folder	/home/vsand/OpenSpace/CDFData/large_256/
+dest_folder	/home/vsand/OpenSpace/ProcessedData/enlil_256_256_256_256/
 
-dimensions 	128 128 128 
+dimensions 	256 256 256
 
 model_name	ENLIL
 grid_type	spherical

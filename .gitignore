@@ -2,8 +2,11 @@ CMakeCache.txt
 cmake_install.cmake
 Makefile
 CMakeFiles/
+src/CMakeFiles/
 Debug/
 Release/
+
+FurnaceApp
 
 *~
 *.sw*

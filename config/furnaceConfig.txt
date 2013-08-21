@@ -1,7 +1,12 @@
-source_folder	/home/vsand/OpenSpace/CDFData/large_256/
-dest_folder	/home/vsand/OpenSpace/ProcessedData/enlil_256_256_256_256/
+# Don't forget a "/" at the end of folders!
 
-dimensions 	256 256 256
+#source_folder	/media/stora_disk/huge_run/
+source_folder	/media/snabba_disk/OpenSpace/raw_data/cdf_32/
+
+dest_folder	/media/snabba_disk/OpenSpace/processed_data/enlil_128_32/
+
+# If the source is CDF - resample to these dimensions
+dimensions 	128 128 128
 
 model_name	ENLIL
 grid_type	spherical

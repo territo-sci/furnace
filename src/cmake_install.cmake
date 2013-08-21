@@ -1,4 +1,4 @@
-# Install script for directory: /home/vsand/OpenSpace/Furnace/src
+# Install script for directory: /media/snabba_disk/OpenSpace/furnace/src
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)

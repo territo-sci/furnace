@@ -36,10 +36,10 @@ CMAKE_COMMAND = /usr/bin/cmake
 RM = /usr/bin/cmake -E remove -f
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/vsand/OpenSpace/Furnace
+CMAKE_SOURCE_DIR = /media/snabba_disk/OpenSpace/furnace
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/vsand/OpenSpace/Furnace
+CMAKE_BINARY_DIR = /media/snabba_disk/OpenSpace/furnace
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -66,14 +66,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/vsand/OpenSpace/Furnace && $(CMAKE_COMMAND) -E cmake_progress_start /home/vsand/OpenSpace/Furnace/CMakeFiles /home/vsand/OpenSpace/Furnace/src/CMakeFiles/progress.marks
-	cd /home/vsand/OpenSpace/Furnace && $(MAKE) -f CMakeFiles/Makefile2 src/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/vsand/OpenSpace/Furnace/CMakeFiles 0
+	cd /media/snabba_disk/OpenSpace/furnace && $(CMAKE_COMMAND) -E cmake_progress_start /media/snabba_disk/OpenSpace/furnace/CMakeFiles /media/snabba_disk/OpenSpace/furnace/src/CMakeFiles/progress.marks
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f CMakeFiles/Makefile2 src/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /media/snabba_disk/OpenSpace/furnace/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/vsand/OpenSpace/Furnace && $(MAKE) -f CMakeFiles/Makefile2 src/clean
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f CMakeFiles/Makefile2 src/clean
 .PHONY : clean
 
 # The main clean target
@@ -82,22 +82,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/vsand/OpenSpace/Furnace && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/vsand/OpenSpace/Furnace && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/vsand/OpenSpace/Furnace && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /media/snabba_disk/OpenSpace/furnace && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 src/CMakeFiles/FurnaceApp.dir/rule:
-	cd /home/vsand/OpenSpace/Furnace && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/FurnaceApp.dir/rule
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/FurnaceApp.dir/rule
 .PHONY : src/CMakeFiles/FurnaceApp.dir/rule
 
 # Convenience name for target.
@@ -106,7 +106,7 @@ FurnaceApp: src/CMakeFiles/FurnaceApp.dir/rule
 
 # fast build rule for target.
 FurnaceApp/fast:
-	cd /home/vsand/OpenSpace/Furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/build
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/build
 .PHONY : FurnaceApp/fast
 
 ENLILReader.o: ENLILReader.cpp.o
@@ -114,7 +114,7 @@ ENLILReader.o: ENLILReader.cpp.o
 
 # target to build an object file
 ENLILReader.cpp.o:
-	cd /home/vsand/OpenSpace/Furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/ENLILReader.cpp.o
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/ENLILReader.cpp.o
 .PHONY : ENLILReader.cpp.o
 
 ENLILReader.i: ENLILReader.cpp.i
@@ -122,7 +122,7 @@ ENLILReader.i: ENLILReader.cpp.i
 
 # target to preprocess a source file
 ENLILReader.cpp.i:
-	cd /home/vsand/OpenSpace/Furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/ENLILReader.cpp.i
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/ENLILReader.cpp.i
 .PHONY : ENLILReader.cpp.i
 
 ENLILReader.s: ENLILReader.cpp.s
@@ -130,7 +130,7 @@ ENLILReader.s: ENLILReader.cpp.s
 
 # target to generate assembly for a file
 ENLILReader.cpp.s:
-	cd /home/vsand/OpenSpace/Furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/ENLILReader.cpp.s
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/ENLILReader.cpp.s
 .PHONY : ENLILReader.cpp.s
 
 Furnace.o: Furnace.cpp.o
@@ -138,7 +138,7 @@ Furnace.o: Furnace.cpp.o
 
 # target to build an object file
 Furnace.cpp.o:
-	cd /home/vsand/OpenSpace/Furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/Furnace.cpp.o
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/Furnace.cpp.o
 .PHONY : Furnace.cpp.o
 
 Furnace.i: Furnace.cpp.i
@@ -146,7 +146,7 @@ Furnace.i: Furnace.cpp.i
 
 # target to preprocess a source file
 Furnace.cpp.i:
-	cd /home/vsand/OpenSpace/Furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/Furnace.cpp.i
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/Furnace.cpp.i
 .PHONY : Furnace.cpp.i
 
 Furnace.s: Furnace.cpp.s
@@ -154,7 +154,7 @@ Furnace.s: Furnace.cpp.s
 
 # target to generate assembly for a file
 Furnace.cpp.s:
-	cd /home/vsand/OpenSpace/Furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/Furnace.cpp.s
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/Furnace.cpp.s
 .PHONY : Furnace.cpp.s
 
 FurnaceApp.o: FurnaceApp.cpp.o
@@ -162,7 +162,7 @@ FurnaceApp.o: FurnaceApp.cpp.o
 
 # target to build an object file
 FurnaceApp.cpp.o:
-	cd /home/vsand/OpenSpace/Furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/FurnaceApp.cpp.o
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/FurnaceApp.cpp.o
 .PHONY : FurnaceApp.cpp.o
 
 FurnaceApp.i: FurnaceApp.cpp.i
@@ -170,7 +170,7 @@ FurnaceApp.i: FurnaceApp.cpp.i
 
 # target to preprocess a source file
 FurnaceApp.cpp.i:
-	cd /home/vsand/OpenSpace/Furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/FurnaceApp.cpp.i
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/FurnaceApp.cpp.i
 .PHONY : FurnaceApp.cpp.i
 
 FurnaceApp.s: FurnaceApp.cpp.s
@@ -178,7 +178,7 @@ FurnaceApp.s: FurnaceApp.cpp.s
 
 # target to generate assembly for a file
 FurnaceApp.cpp.s:
-	cd /home/vsand/OpenSpace/Furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/FurnaceApp.cpp.s
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/FurnaceApp.cpp.s
 .PHONY : FurnaceApp.cpp.s
 
 VolumeReader.o: VolumeReader.cpp.o
@@ -186,7 +186,7 @@ VolumeReader.o: VolumeReader.cpp.o
 
 # target to build an object file
 VolumeReader.cpp.o:
-	cd /home/vsand/OpenSpace/Furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/VolumeReader.cpp.o
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/VolumeReader.cpp.o
 .PHONY : VolumeReader.cpp.o
 
 VolumeReader.i: VolumeReader.cpp.i
@@ -194,7 +194,7 @@ VolumeReader.i: VolumeReader.cpp.i
 
 # target to preprocess a source file
 VolumeReader.cpp.i:
-	cd /home/vsand/OpenSpace/Furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/VolumeReader.cpp.i
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/VolumeReader.cpp.i
 .PHONY : VolumeReader.cpp.i
 
 VolumeReader.s: VolumeReader.cpp.s
@@ -202,7 +202,7 @@ VolumeReader.s: VolumeReader.cpp.s
 
 # target to generate assembly for a file
 VolumeReader.cpp.s:
-	cd /home/vsand/OpenSpace/Furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/VolumeReader.cpp.s
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/VolumeReader.cpp.s
 .PHONY : VolumeReader.cpp.s
 
 # Help Target
@@ -237,6 +237,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/vsand/OpenSpace/Furnace && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /media/snabba_disk/OpenSpace/furnace && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

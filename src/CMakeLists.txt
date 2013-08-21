@@ -1,4 +1,4 @@
-set(OPENSPACE_DIR /home/vsand/OpenSpace)
+set(OPENSPACE_DIR /media/snabba_disk/OpenSpace)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 

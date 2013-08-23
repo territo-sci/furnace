@@ -67,6 +67,10 @@ bool ENLILReader::ProcessFolder(const std::string &_sourceFolder,
   size_t nvpts = static_cast<size_t>(numVoxelsPerTimestep_);
   data_.resize(nvpts);
 
+  if (numTimesteps_ % 2 != 0) {
+    std::cerr << "\nWARNING: Number of timesteps is not even!\n" << std::endl;
+  }
+
   // Write header file
   if (!WriteHeader(_destFolder)) {
     std::cerr << "Failed to write header" << std::endl;
@@ -107,6 +111,17 @@ bool ENLILReader::ProcessFolder(const std::string &_sourceFolder,
 bool ENLILReader::ProcessFile(const std::string &_filename, 
                               const std::string &_destFolder,
                               unsigned int _timestep) {
+
+  std::string timestepStr = boost::lexical_cast<std::string>(_timestep);
+  std::string fullPath = _destFolder + timestepFilename_ + timestepStr +
+    timestepSuffix_;
+
+  // If file already exists (eg left from aborted run), skip it
+  if (fs::exists(fullPath)) {
+    std::cout << fullPath << " already exists" << std::endl;
+    return true;
+  }
+
 
   // Open file using Kameleon instance
   if (kameleon_->open(_filename) != ccmc::FileReader::OK) {
@@ -216,10 +231,6 @@ bool ENLILReader::ProcessFile(const std::string &_filename,
   std::cout<<"                                              \r" <<std::flush;
 
   // Write to file
-
-  std::string timestepStr = boost::lexical_cast<std::string>(_timestep);
-  std::string fullPath = _destFolder + timestepFilename_ + timestepStr +
-    timestepSuffix_;
 
 
   std::fstream out;

@@ -24,3 +24,5 @@ FurnaceApp
 *.tmp
 *.tsp
 *.log
+
+.project

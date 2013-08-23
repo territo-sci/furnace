@@ -76,8 +76,6 @@ bool VolumeReader::WriteHeader(const std::string &_destFolder) {
 
   out.close();
 
-  std::cout << "Header written to " << fullPath << std::endl;
-
   return true;
 }
 

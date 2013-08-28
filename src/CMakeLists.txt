@@ -16,9 +16,9 @@ link_directories(${OPENSPACE_DIR}/cdf34_1-dist/lib)
 
 add_executable(FurnaceApp 
 	       FurnaceApp.cpp
-	       ENLILReader.cpp 
-               #PointCloudReader.cpp
-	       VolumeReader.cpp 
+	       ENLILProcessor.cpp 
+	       MLProcessor.cpp
+	       VolumeProcessor.cpp 
 	       Furnace.cpp)
 
 target_link_libraries(FurnaceApp ${Boost_LIBRARIES})

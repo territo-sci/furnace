@@ -10,7 +10,7 @@
 
 namespace osp {
 
-class VolumeReader;
+class VolumeProcessor;
 
 class Furnace {
 public:
@@ -20,7 +20,7 @@ public:
   // List all supported model types
   enum ModelType {
     ENLIL = 0,
-    POINTCLOUD,
+    ML,
     NO_MODEL
   };
 
@@ -31,7 +31,7 @@ public:
     NO_GRID
   };
 
-  // Set model type and create a corresponding VolumeReader subclass instance
+  // Set model type and create a corresponding VolumeProcessor subclass instance
   bool SetModelType(ModelType _modelType);
   // Set grid type 
   // Only affects output variable, not reading itself unless implemented
@@ -42,7 +42,7 @@ public:
                      unsigned int _zDim);
   void SetSourceFolder(const std::string &_sourceFolder);
   void SetDestFolder(const std::string &_destFolder);
-  // Read input and write to output using VolumeReader instance
+  // Read input and write to output using VolumeProcessor instance
   bool ProcessFolder();
 
 private:
@@ -53,7 +53,7 @@ private:
   std::string destFolder_;
 
   // Instance of reader (set by SetModelType() function)
-  VolumeReader *volumeReader_;
+  VolumeProcessor *volumeProcessor_;
 
 };
 

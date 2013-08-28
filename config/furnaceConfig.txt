@@ -1,19 +1,18 @@
 # Don't forget a "/" at the end of folders!
 
 # Folder to read from 
-# Note: The number of timesteps needs to be EVEN!
-#source_folder	/media/stora_disk/huge_run/
-source_folder	/media/snabba_disk/OpenSpace/raw_data/cdf_24/
+source_folder	/media/snabba_disk/OpenSpace/raw_data/cdf_32/
+
 
 # Destination folder
 # (will output "volume.vdf" into this foler) 
-dest_folder	/media/snabba_disk/OpenSpace/processed_data/enlil_128_24/
+dest_folder	/media/snabba_disk/OpenSpace/processed_data/cdf_64_32/
 
-#  Output dimensions
-# If the source is CDF - resample to these dimensions
-dimensions 	128 128 128
+# Output dimensions
+# NOTE: These must be of the same size, and powers of two
+dimensions 	64 64 64
 
-# Model name
+# Model name (ENLIL, ML)
 model_name	ENLIL
 
 # Grid type (spherical, cartesian)

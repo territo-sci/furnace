@@ -4,21 +4,21 @@
  */
 
 #include <Furnace.h>
-#include <VolumeReader.h>
-#include <ENLILReader.h>
-#include <PointCloudReader.h>
+#include <VolumeProcessor.h>
+#include <ENLILProcessor.h>
+#include <MLProcessor.h>
 #include <iostream>
 
 using namespace osp;
 
 Furnace::Furnace() 
-  : volumeReader_(NULL), 
+  : volumeProcessor_(NULL), 
     sourceFolder_("NotSet"),
     destFolder_("NotSet") {
 }
 
 Furnace::~Furnace() {
-  if (volumeReader_) delete volumeReader_;
+  if (volumeProcessor_) delete volumeProcessor_;
 }
 
 Furnace * Furnace::New() {
@@ -34,25 +34,25 @@ void Furnace::SetDestFolder(const std::string &_destFolder) {
 }
 
 void Furnace::SetGridType(GridType _gridType) {
-  volumeReader_->SetGridType(static_cast<unsigned int>(_gridType));
+  volumeProcessor_->SetGridType(static_cast<unsigned int>(_gridType));
 }
 
 void Furnace::SetDimensions(unsigned int _xDim,
                             unsigned int _yDim,
                             unsigned int _zDim) {
-  if (!volumeReader_) {
+  if (!volumeProcessor_) {
     std::cerr << "Trying to set dimensions without a reader" << std::endl;
   } else {
-    volumeReader_->SetDimensions(_xDim, _yDim, _zDim);
+    volumeProcessor_->SetDimensions(_xDim, _yDim, _zDim);
   }
 }
 
 bool Furnace::ProcessFolder() {
-  if (!volumeReader_) {
+  if (!volumeProcessor_) {
     std::cerr << "Cannot process folder without a reader" << std::endl;
     return false;
   }
-  if (!volumeReader_->ProcessFolder(sourceFolder_, destFolder_)) {
+  if (!volumeProcessor_->ProcessFolder(sourceFolder_, destFolder_)) {
     std::cerr << "Failed to process folder " << sourceFolder_ << std::endl;
   }
   return true;
@@ -61,15 +61,15 @@ bool Furnace::ProcessFolder() {
 
 bool Furnace::SetModelType(ModelType _modelType) {
 
-  if (volumeReader_) {
+  if (volumeProcessor_) {
     std::cout << "Warning: Model already set" << std::endl;
-    delete volumeReader_;
+    delete volumeProcessor_;
   }
 
   if (_modelType == ENLIL) {
-    volumeReader_ = ENLILReader::New();
-  //} else if (_modelType == POINTCLOUD) {
-  //  volumeReader_ = PointCloudReader::New();
+    volumeProcessor_ = ENLILProcessor::New();
+  } else if (_modelType == ML) {
+    volumeProcessor_ = MLProcessor::New();
   } else {
     std::cerr << "Unknown model type" << std::endl;
     return false;

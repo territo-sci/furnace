@@ -63,8 +63,8 @@ int main() {
         ss >> modelName;
         if (modelName == "ENLIL") {
           modelType = osp::Furnace::ENLIL;
-        } else if (modelName == "pointcloud") {
-          modelType = osp::Furnace::POINTCLOUD;
+        } else if (modelName == "ML") {
+          modelType = osp::Furnace::ML;
         } else {
           std::cerr << "Model name " << modelName << " unknown" << std::endl;
           exit(1);
@@ -109,7 +109,6 @@ int main() {
     std::cerr << "Furnace failed to process folder" << std::endl;
     exit(1);
   }
-
 
   // Clean up and exit
   delete furnace;

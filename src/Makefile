@@ -109,29 +109,29 @@ FurnaceApp/fast:
 	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/build
 .PHONY : FurnaceApp/fast
 
-ENLILReader.o: ENLILReader.cpp.o
-.PHONY : ENLILReader.o
+ENLILProcessor.o: ENLILProcessor.cpp.o
+.PHONY : ENLILProcessor.o
 
 # target to build an object file
-ENLILReader.cpp.o:
-	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/ENLILReader.cpp.o
-.PHONY : ENLILReader.cpp.o
+ENLILProcessor.cpp.o:
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/ENLILProcessor.cpp.o
+.PHONY : ENLILProcessor.cpp.o
 
-ENLILReader.i: ENLILReader.cpp.i
-.PHONY : ENLILReader.i
+ENLILProcessor.i: ENLILProcessor.cpp.i
+.PHONY : ENLILProcessor.i
 
 # target to preprocess a source file
-ENLILReader.cpp.i:
-	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/ENLILReader.cpp.i
-.PHONY : ENLILReader.cpp.i
+ENLILProcessor.cpp.i:
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/ENLILProcessor.cpp.i
+.PHONY : ENLILProcessor.cpp.i
 
-ENLILReader.s: ENLILReader.cpp.s
-.PHONY : ENLILReader.s
+ENLILProcessor.s: ENLILProcessor.cpp.s
+.PHONY : ENLILProcessor.s
 
 # target to generate assembly for a file
-ENLILReader.cpp.s:
-	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/ENLILReader.cpp.s
-.PHONY : ENLILReader.cpp.s
+ENLILProcessor.cpp.s:
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/ENLILProcessor.cpp.s
+.PHONY : ENLILProcessor.cpp.s
 
 Furnace.o: Furnace.cpp.o
 .PHONY : Furnace.o
@@ -181,29 +181,53 @@ FurnaceApp.cpp.s:
 	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/FurnaceApp.cpp.s
 .PHONY : FurnaceApp.cpp.s
 
-VolumeReader.o: VolumeReader.cpp.o
-.PHONY : VolumeReader.o
+MLProcessor.o: MLProcessor.cpp.o
+.PHONY : MLProcessor.o
 
 # target to build an object file
-VolumeReader.cpp.o:
-	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/VolumeReader.cpp.o
-.PHONY : VolumeReader.cpp.o
+MLProcessor.cpp.o:
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/MLProcessor.cpp.o
+.PHONY : MLProcessor.cpp.o
 
-VolumeReader.i: VolumeReader.cpp.i
-.PHONY : VolumeReader.i
+MLProcessor.i: MLProcessor.cpp.i
+.PHONY : MLProcessor.i
 
 # target to preprocess a source file
-VolumeReader.cpp.i:
-	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/VolumeReader.cpp.i
-.PHONY : VolumeReader.cpp.i
+MLProcessor.cpp.i:
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/MLProcessor.cpp.i
+.PHONY : MLProcessor.cpp.i
 
-VolumeReader.s: VolumeReader.cpp.s
-.PHONY : VolumeReader.s
+MLProcessor.s: MLProcessor.cpp.s
+.PHONY : MLProcessor.s
 
 # target to generate assembly for a file
-VolumeReader.cpp.s:
-	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/VolumeReader.cpp.s
-.PHONY : VolumeReader.cpp.s
+MLProcessor.cpp.s:
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/MLProcessor.cpp.s
+.PHONY : MLProcessor.cpp.s
+
+VolumeProcessor.o: VolumeProcessor.cpp.o
+.PHONY : VolumeProcessor.o
+
+# target to build an object file
+VolumeProcessor.cpp.o:
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/VolumeProcessor.cpp.o
+.PHONY : VolumeProcessor.cpp.o
+
+VolumeProcessor.i: VolumeProcessor.cpp.i
+.PHONY : VolumeProcessor.i
+
+# target to preprocess a source file
+VolumeProcessor.cpp.i:
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/VolumeProcessor.cpp.i
+.PHONY : VolumeProcessor.cpp.i
+
+VolumeProcessor.s: VolumeProcessor.cpp.s
+.PHONY : VolumeProcessor.s
+
+# target to generate assembly for a file
+VolumeProcessor.cpp.s:
+	cd /media/snabba_disk/OpenSpace/furnace && $(MAKE) -f src/CMakeFiles/FurnaceApp.dir/build.make src/CMakeFiles/FurnaceApp.dir/VolumeProcessor.cpp.s
+.PHONY : VolumeProcessor.cpp.s
 
 # Help Target
 help:
@@ -214,18 +238,21 @@ help:
 	@echo "... FurnaceApp"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... ENLILReader.o"
-	@echo "... ENLILReader.i"
-	@echo "... ENLILReader.s"
+	@echo "... ENLILProcessor.o"
+	@echo "... ENLILProcessor.i"
+	@echo "... ENLILProcessor.s"
 	@echo "... Furnace.o"
 	@echo "... Furnace.i"
 	@echo "... Furnace.s"
 	@echo "... FurnaceApp.o"
 	@echo "... FurnaceApp.i"
 	@echo "... FurnaceApp.s"
-	@echo "... VolumeReader.o"
-	@echo "... VolumeReader.i"
-	@echo "... VolumeReader.s"
+	@echo "... MLProcessor.o"
+	@echo "... MLProcessor.i"
+	@echo "... MLProcessor.s"
+	@echo "... VolumeProcessor.o"
+	@echo "... VolumeProcessor.i"
+	@echo "... VolumeProcessor.s"
 .PHONY : help
 
 

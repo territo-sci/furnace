@@ -33,7 +33,7 @@ ENLILProcessor::~ENLILProcessor() {
 }
 
 bool ENLILProcessor::ProcessFolder(const std::string &_sourceFolder,
-                                const std::string &_destFolder) {
+                                   const std::string &_destFolder) {
   
   // See if path exists
   if (!fs::exists(_sourceFolder)) {
@@ -77,7 +77,7 @@ bool ENLILProcessor::ProcessFolder(const std::string &_sourceFolder,
     return false;
   }
 
-  // process the individual timesteps
+  // Process the individual timesteps
   unsigned int timestep = 0;
   for (auto it=filenames.begin(); it!=filenames.end(); ++it) {
     if (!ProcessFile(it->string(), _destFolder, timestep++)) {
@@ -85,6 +85,9 @@ bool ENLILProcessor::ProcessFolder(const std::string &_sourceFolder,
       return false;
     }
   }
+
+  // Cosmetic clearing of the output from ProcessFile
+  std::cout<<"                                              \r" <<std::flush;
 
   // Gather temp files, normalize and write to single output
   if (!WriteFinal(_destFolder)) {
@@ -94,12 +97,6 @@ bool ENLILProcessor::ProcessFolder(const std::string &_sourceFolder,
 
   // Delete temp files
   DeleteTempFiles(_destFolder);
-
-  // Normalize
-  //std::cout << "Normalizing" << std::endl;
-  //for (auto it=data_.begin(); it!=data_.end(); ++it) {
-  //  *it = (*it - min_)/(max_ - min_);
-  //  }
 
   std::cout << "Processing complete" << std::endl;
 
@@ -158,7 +155,7 @@ bool ENLILProcessor::ProcessFile(const std::string &_filename,
     unsigned int progress = (unsigned int)(((float)phi/(float)zDim_)*100.f);
     if (progress % 10 == 0) {
       std::cout << "Processing timestep " << _timestep+1 << "/" 
-        << numTimesteps_ << ", " << progress << "%\r" << std::flush;
+        << numTimesteps_ << ", " << progress << "%     \r" << std::flush;
     }
     for (unsigned int theta=0; theta<yDim_; ++theta) {
       for (unsigned int r=0; r<xDim_; ++r) {
@@ -208,8 +205,8 @@ bool ENLILProcessor::ProcessFile(const std::string &_filename,
           rho_back = interpolator_->interpolate("rho-back",rPh,thetaPh,phiPh);
 
           // Calculate difference (or just rho)
-          //diff = rho;
-          diff = rho - rho_back;
+          diff = rho;
+          //diff = rho - rho_back;
 
           // Clamp to 0
           if (diff < 0.f) diff = 0.f;
@@ -228,7 +225,9 @@ bool ENLILProcessor::ProcessFile(const std::string &_filename,
     } // theta
   } // phi
 
-  std::cout<<"                                              \r" <<std::flush;
+  std::cout << "Processing timestep " << _timestep+1 << "/" 
+        << numTimesteps_ << ", 100%   \r" << std::flush;
+
 
   // Write to file
 

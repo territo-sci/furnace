@@ -1,16 +1,16 @@
 # Don't forget a "/" at the end of folders!
 
 # Folder to read from 
-source_folder	/media/snabba_disk/OpenSpace/raw_data/cdf_32/
+source_folder	/media/snabba_disk/OpenSpace/raw_data/cdf_256/
 
 
 # Destination folder
 # (will output "volume.vdf" into this foler) 
-dest_folder	/media/snabba_disk/OpenSpace/processed_data/cdf_64_32/
+dest_folder	/media/snabba_disk/OpenSpace/processed_data/enlil_128_256/
 
 # Output dimensions
 # NOTE: These must be of the same size, and powers of two
-dimensions 	64 64 64
+dimensions 	256 256 256
 
 # Model name (ENLIL, ML)
 model_name	ENLIL

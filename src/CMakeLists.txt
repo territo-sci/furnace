@@ -12,8 +12,7 @@ include_directories(${FurnaceApp_SOURCE_DIR}/inc)
 include_directories(${KAMELEON_DIR}/src)
 
 link_directories(${Boost_LIBRARY_DIR})
-link_directories(${KAMELEON_DIR}/src/ccmc/.libs)
-link_directories(${CDF_DIR}/cdf${CDF_VERSION}-dist/src/include)
+link_directories(${OPENSPACE_DIR}/bin/lib)
 
 add_executable(FurnaceApp 
 	       FurnaceApp.cpp
@@ -23,5 +22,6 @@ add_executable(FurnaceApp
 	       Furnace.cpp)
 
 target_link_libraries(FurnaceApp ${Boost_LIBRARIES})
-target_link_libraries(FurnaceApp libcdf.so)
-target_link_libraries(FurnaceApp libkameleon_plus.so)
+target_link_libraries(FurnaceApp libcdf.a)
+target_link_libraries(FurnaceApp libccmc.a)
+target_link_libraries(FurnaceApp libopenspace-module-kameleon.a)

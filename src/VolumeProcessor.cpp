@@ -12,7 +12,7 @@
 using namespace osp;
 namespace fs = boost::filesystem;
 
-VolumeProcessor::VolumeProcessor() 
+VolumeProcessor::VolumeProcessor()
   : gridType_(1), 
     numTimesteps_(0),
     xDim_(0), 
@@ -88,7 +88,7 @@ bool VolumeProcessor::WriteFinal(const std::string &_destFolder) {
     return false;
   }
 
-  off fileSize;
+  size_t fileSize;
   char * buffer;
 
   // Look for header and read it

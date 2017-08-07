@@ -11,10 +11,32 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <boost/program_options.hpp>
 
-int main() {
+namespace FurnaceApp {
+namespace options {
+    boost::program_options::variables_map opts;
+    const char* CONFIG  = "config";
+    const char* HELP    = "help";
+} // namespace options
+} // namespace FurnaceApp
 
-  // Read config (very simple implementation) 
+namespace options = boost::program_options;
+
+
+void parseOptions(int ac, char* av[], options::variables_map &vm) {
+    options::options_description desc("Options");
+    desc.add_options()
+        (FurnaceApp::options::CONFIG, options::value<std::string>(), "configuration file")
+        (FurnaceApp::options::HELP, "print help")
+    ;
+
+    options::store(options::parse_command_line(ac, av, desc), vm);
+}
+
+int main(int ac, char* av[]) {
+
+  // Read config (very simple implementation)
   std::string sourceFolder = "";
   std::string destFolder = "";
   unsigned int xDim = 0, yDim = 0, zDim = 0;
@@ -22,8 +44,15 @@ int main() {
   osp::Furnace::ModelType modelType = osp::Furnace::NO_MODEL;
   std::string gridName = "";
   osp::Furnace::GridType gridType = osp::Furnace::NO_GRID;
-  
   std::string config = "config/furnaceConfig.txt";
+
+
+  parseOptions(ac, av, FurnaceApp::options::opts);
+
+  if(FurnaceApp::options::opts.count(FurnaceApp::options::CONFIG)) {
+      config = FurnaceApp::options::opts[FurnaceApp::options::CONFIG].as<std::string>();
+  }
+
   std::ifstream in;
   in.open(config.c_str(), std::ifstream::in);
   if (!in.is_open()) {

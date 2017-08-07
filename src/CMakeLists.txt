@@ -5,7 +5,7 @@ set(CDF_DIR ${KAMELEON_DIR}/ext/cdf)
 set(CDF_VERSION 35_0 CACHE STRING "Version number of CDF library (form 'major_minor')")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-find_package(Boost COMPONENTS system filesystem REQUIRED)
+find_package(Boost COMPONENTS system filesystem program_options REQUIRED)
 
 include_directories(${Boost_INCLUDE_DIR})
 include_directories(${FurnaceApp_SOURCE_DIR}/inc)

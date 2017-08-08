@@ -9,6 +9,8 @@
 #include <stdio.h>
 
 #include <boost/filesystem.hpp>
+#include <boost/asio.hpp>
+#include <boost/thread.hpp>
 
 
 #include <set>
@@ -130,14 +132,6 @@ bool ENLILProcessor::ProcessFile(const std::string &_filename,
     return false;
   }
 
-  // Create interpolator (has to be done after file is opened)
-  interpolator_ = kameleon_->createNewInterpolator();
-
-  if (!interpolator_) {
-    std::cerr << "Failed to create interpolator" << std::endl;
-    return false;
-  }
-
   // Get variable limits from model
   float rMin =
     kameleon_->getVariableAttribute("r", "actual_min").getAttributeFloat();
@@ -163,68 +157,7 @@ bool ENLILProcessor::ProcessFile(const std::string &_filename,
     }
     for (unsigned int theta=0; theta<yDim_; ++theta) {
       for (unsigned int r=0; r<xDim_; ++r) {
-  
-        // Calculate array index
-        unsigned int index = r + theta*xDim_ + phi*xDim_*yDim_;
-
-        // Put r in the [0..sqrt(3)] range
-        float rNorm = sqrt(3.0)*(float)r/(float)(xDim_-1);
-
-        // Put theta in the [0..PI] range
-        float thetaNorm = M_PI*(float)theta/(float)(yDim_-1);
-
-        // Put phi in the [0..2PI] range
-        float phiNorm = 2.0*M_PI*(float)phi/(float)(zDim_-1);
-
-        // Go to physical coordinates before sampling
-        float rPh = rMin + rNorm*(rMax-rMin);
-        float thetaPh = thetaNorm;
-        //phi range needs to be mapped to the slightly different
-        // model range to avoid gaps in the data
-        // Subtract a small term to avoid rounding errors when comparing
-        // to phiMax.
-        float phiPh = phiMin + phiNorm/(2.0*M_PI)*(phiMax-phiMin-0.000001);
-
-        // Hardcoded variables (rho or rho - rho_back)
-        // TODO Don't hardcode, make more flexible
-        float rho = 0.f, rho_back = 0.f, diff = 0.f;
-        // See if sample point is inside domain
-        if (rPh < rMin || rPh > rMax || thetaPh < thetaMin ||
-            thetaPh > thetaMax || phiPh < phiMin || phiPh > phiMax) {
-          if (phiPh > phiMax) {
-            std::cout << "Warning: There might be a gap in the data\n";
-          }
-          // Leave values at zero if outside domain
-        } else { // if inside
-
-          // ENLIL CDF specific hacks!
-          // Convert from meters to AU for interpolator
-          rPh /= ccmc::constants::AU_in_meters;
-          // Convert from colatitude [0, pi] rad to latitude [-90, 90] degrees
-          thetaPh = -thetaPh*180.f/M_PI+90.f;
-          // Convert from [0, 2pi] rad to [0, 360] degrees
-          phiPh = phiPh*180.f/M_PI;
-          // Sample
-          rho = interpolator_->interpolate("rho", rPh, thetaPh, phiPh);
-          rho_back = interpolator_->interpolate("rho-back",rPh,thetaPh,phiPh);
-
-          // Calculate difference (or just rho)
-          diff = rho;
-          //diff = rho - rho_back;
-
-          // Clamp to 0
-          if (diff < 0.f) diff = 0.f;
-        }
-
-        // Update min/max
-        if (diff > max_) { 
-          max_ = diff;
-        } else if (diff < min_) {
-          min_ = diff;
-        }
-
-        data_[index] = diff;
-
+          fileWorker(rMin, rMax, thetaMin, thetaMax, phiMin, phiMax, phi, theta, r);
       } // r
     } // theta
   } // phi
@@ -249,4 +182,77 @@ bool ENLILProcessor::ProcessFile(const std::string &_filename,
   fclose(out);
 
   return true;
+}
+
+bool ENLILProcessor::fileWorker(float rMin, float rMax, float thetaMin, float thetaMax, float phiMin, float phiMax,
+                                unsigned int phi, unsigned int theta, unsigned int r) {// Calculate array index
+
+    // Create interpolator (has to be done after file is opened)
+    ccmc::Interpolator * interpolator = kameleon_->createNewInterpolator();
+
+    if (!interpolator) {
+        std::cerr << "Failed to create interpolator" << std::endl;
+        return false;
+    }
+
+    unsigned int index = r + theta * this->xDim_ + phi * this->xDim_ * this->yDim_;
+
+    // Put r in the [0..sqrt(3)] range
+    float rNorm = sqrt(3.0)*(float)r/(float)(this->xDim_ - 1);
+
+    // Put theta in the [0..PI] range
+    float thetaNorm = M_PI*(float)theta/(float)(this->yDim_ - 1);
+
+    // Put phi in the [0..2PI] range
+    float phiNorm = 2.0*M_PI*(float)phi/(float)(this->zDim_ - 1);
+
+    // Go to physical coordinates before sampling
+    float rPh = rMin + rNorm*(rMax-rMin);
+    float thetaPh = thetaNorm;
+    //phi range needs to be mapped to the slightly different
+    // model range to avoid gaps in the data
+    // Subtract a small term to avoid rounding errors when comparing
+    // to phiMax.
+    float phiPh = phiMin + phiNorm/(2.0*M_PI)*(phiMax-phiMin-0.000001);
+
+    // Hardcoded variables (rho or rho - rho_back)
+    // TODO Don't hardcode, make more flexible
+    float rho = 0.f, rho_back = 0.f, diff = 0.f;
+    // See if sample point is inside domain
+    if (rPh < rMin || rPh > rMax || thetaPh < thetaMin ||
+            thetaPh > thetaMax || phiPh < phiMin || phiPh > phiMax) {
+          if (phiPh > phiMax) {
+            std::__1::cout << "Warning: There might be a gap in the data\n";
+          }
+          // Leave values at zero if outside domain
+        } else { // if inside
+
+          // ENLIL CDF specific hacks!
+          // Convert from meters to AU for interpolator
+          rPh /= ccmc::constants::AU_in_meters;
+          // Convert from colatitude [0, pi] rad to latitude [-90, 90] degrees
+          thetaPh = -thetaPh*180.f/M_PI+90.f;
+          // Convert from [0, 2pi] rad to [0, 360] degrees
+          phiPh = phiPh*180.f/M_PI;
+          // Sample
+          rho = interpolator->interpolate("rho", rPh, thetaPh, phiPh);
+          rho_back = interpolator->interpolate("rho-back", rPh, thetaPh, phiPh);
+
+          // Calculate difference (or just rho)
+          diff = rho;
+          //diff = rho - rho_back;
+
+          // Clamp to 0
+          if (diff < 0.f) diff = 0.f;
+        }
+
+    // Update min/max
+    if (diff > this->max_) {
+          this->max_ = diff;
+        } else if (diff < this->min_) {
+          this->min_ = diff;
+        }
+
+    this->data_[index] = diff;
+    return true;
 }

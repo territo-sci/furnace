@@ -36,7 +36,9 @@ private:
   bool ProcessFile(const std::string &_filename,
                    const std::string &_destFolder,
                    unsigned int _timestep);
-  
+
+  bool fileWorker(float rMin, float rMax, float thetaMin, float thetaMax, float phiMin, float phiMax,
+                                  unsigned int phi, unsigned int theta, unsigned int r);
   // CCMC parts
   ccmc::Kameleon *kameleon_;
   // Interpolator can't be created until file has been opened!

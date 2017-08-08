@@ -7,6 +7,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <boost/filesystem.hpp>
+#include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 
 using namespace osp;
@@ -169,50 +170,10 @@ bool VolumeProcessor::DeleteTempFiles(const std::string &_destFolder) {
   return true;
 }
 
-
-/*
-bool VolumeProcessor::Write(const std::string &_outFilename) {
-  
-  // Do some checks
-  if (!hasRead_) {
-    std::cerr << "Cannot write without reading first" << std::endl;
-    return false;
-  }
-
-  if (xDim_ == 0 || yDim_ == 0 || zDim_ == 0) {
-    std::cerr << "One or more dimensions == 0" << std::endl;
-    return false;
-  }
-
-  // Write
-  std::fstream out;
-  out.open(_outFilename.c_str(), 
-           std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
-  if (!out.is_open()) {
-    std::cerr << "Failed to open " << _outFilename << std::endl;
-    return false;
-  }
-
-  std::cout << "Writing data: " << std::endl;
-  std::cout << "Grid type: " << gridType_ << std::endl;
-  std::cout << "Num timesteps: " << numTimesteps_ << std::endl;
-  std::cout << "Dimensions: "<<xDim_<< " " << yDim_<< " " << zDim_<< std::endl;
-
-  out.write(reinterpret_cast<char*>(&gridType_), sizeof(unsigned int));
-  out.write(reinterpret_cast<char*>(&numTimesteps_), sizeof(unsigned int));
-  out.write(reinterpret_cast<char*>(&xDim_), sizeof(unsigned int));
-  out.write(reinterpret_cast<char*>(&yDim_), sizeof(unsigned int));
-  out.write(reinterpret_cast<char*>(&zDim_), sizeof(unsigned int));
-  out.write(reinterpret_cast<char*>(&data_[0]), 
-    sizeof(float)*numTimesteps_*numVoxelsPerTimestep_);
-
-  out.close();
-
-  std::cout << "Written to " << _outFilename << " succesfully!" << std::endl;
-
-  return true; 
+bool VolumeProcessor::testSuffix(fs::path path, const char* suffix) {
+    const std::string ext = boost::algorithm::to_lower_copy(fs::extension(path));
+    return ext == suffix;
 }
-*/
 
 
 

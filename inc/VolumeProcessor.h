@@ -20,6 +20,11 @@
 #define _FILE_OFFSET_BITS 64
 #define off off64_t
 
+namespace boost {
+namespace filesystem {
+class path;
+}
+}
 namespace osp {
 
 class VolumeProcessor {
@@ -52,12 +57,15 @@ protected:
   // Delete temporary files
   bool DeleteTempFiles(const std::string &_destFolder);
 
+  bool testSuffix(boost::filesystem::path path, const char* suffix);
+
   // Names for (temporary) header and timestep files
   const std::string tempSuffix_ = ".tmp";
   const std::string headerFilename_ = "header";
   const std::string headerSuffix_ = ".tmp";
   const std::string timestepFilename_ = "timestep_";
   const std::string timestepSuffix_ = ".tmp";
+  const char* const cdfSuffix = ".cdf";
   
   // Name for final file
   const std::string finalFilename = "volume.vdf";

@@ -7,7 +7,10 @@
 #include <ccmc/Kameleon.h>
 #include <iostream>
 #include <stdio.h>
+
 #include <boost/filesystem.hpp>
+
+
 #include <set>
 
 using namespace osp;
@@ -49,9 +52,10 @@ bool ENLILProcessor::ProcessFolder(const std::string &_sourceFolder,
 
   // Insert the filenames in folder into a set to keep them ordered
   std::set<fs::path> filenames;
-  for (fs::directory_iterator it(_sourceFolder);
-       it!=fs::directory_iterator(); ++it) {
-    filenames.insert(it->path());
+  for (fs::directory_iterator it(_sourceFolder); it!=fs::directory_iterator(); ++it) {
+      if (testSuffix(it->path(), VolumeProcessor::cdfSuffix)) {
+          filenames.insert(it->path());
+      }
   }
 
   // Check dimensions

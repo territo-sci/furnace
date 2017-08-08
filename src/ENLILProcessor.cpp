@@ -17,6 +17,7 @@
 
 using namespace osp;
 namespace fs = boost::filesystem;
+namespace as = boost::asio;
 
 ENLILProcessor::ENLILProcessor(ccmc::Kameleon *_kameleon)
   : VolumeProcessor(), 
@@ -148,7 +149,17 @@ bool ENLILProcessor::ProcessFile(const std::string &_filename,
 
   // Loop over volume
   // [x, y, z] -> [r, theta, phi] for spherical model
-  // TODO: Parallelize
+  // TODO: Parallelize http://think-async.com/Asio/Recipes?skin=clean.nat,asio,pattern#A_thread_pool_for_executing_arbi
+
+  as::io_service io_service;
+  as::io_service::work work(io_service);
+
+  const size_t threadCount = boost::thread::hardware_concurrency();
+  boost::thread_group threads;
+  for (std::size_t i = 0; i < threadCount; ++i) {
+    threads.create_thread(boost::bind(&as::io_service::run, &io_service));
+  }
+
   for (unsigned int phi=0; phi<zDim_; ++phi) {
     unsigned int progress = (unsigned int)(((float)phi/(float)zDim_)*100.f);
     if (progress % 10 == 0) {
@@ -157,10 +168,15 @@ bool ENLILProcessor::ProcessFile(const std::string &_filename,
     }
     for (unsigned int theta=0; theta<yDim_; ++theta) {
       for (unsigned int r=0; r<xDim_; ++r) {
-          fileWorker(rMin, rMax, thetaMin, thetaMax, phiMin, phiMax, phi, theta, r);
+        const AttributeObject attr = { r, rMin, rMax, theta, thetaMin, thetaMax, phi, phiMin, phiMax };
+        io_service.post(boost::bind(&ENLILProcessor::fileWorker, this, attr));
+
       } // r
     } // theta
   } // phi
+
+  io_service.stop();
+  threads.join_all();
 
   std::cout << "Processing timestep " << _timestep+1 << "/" 
         << numTimesteps_ << ", 100%   \r" << std::flush;
@@ -184,8 +200,19 @@ bool ENLILProcessor::ProcessFile(const std::string &_filename,
   return true;
 }
 
-bool ENLILProcessor::fileWorker(float rMin, float rMax, float thetaMin, float thetaMax, float phiMin, float phiMax,
-                                unsigned int phi, unsigned int theta, unsigned int r) {// Calculate array index
+bool ENLILProcessor::fileWorker(AttributeObject &attr) {
+    unsigned int r = attr.r,
+                 theta = attr.theta,
+                 phi = attr.phi;
+
+    float rMax = attr.rMax,
+          rMin = attr.rMin,
+          thetaMin = attr.thetaMin,
+          thetaMax = attr.thetaMax,
+          phiMin = attr.phiMin,
+          phiMax = attr.phiMax;
+
+    // Calculate array index
 
     // Create interpolator (has to be done after file is opened)
     ccmc::Interpolator * interpolator = kameleon_->createNewInterpolator();

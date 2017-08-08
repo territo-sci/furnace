@@ -19,6 +19,17 @@ namespace osp {
 
 class ENLILProcessor : public VolumeProcessor {
 public:
+    struct AttributeObject {
+        unsigned int r;
+        float rMin;
+        float rMax;
+        unsigned int phi;
+        float phiMin;
+        float phiMax;
+        unsigned int theta;
+        float thetaMin;
+        float thetaMax;
+    };
   // Initializes Kameleon and Interpolator objects, returns ENLILProcessor
   static ENLILProcessor * New();
   ~ENLILProcessor();
@@ -37,8 +48,7 @@ private:
                    const std::string &_destFolder,
                    unsigned int _timestep);
 
-  bool fileWorker(float rMin, float rMax, float thetaMin, float thetaMax, float phiMin, float phiMax,
-                                  unsigned int phi, unsigned int theta, unsigned int r);
+  bool fileWorker(AttributeObject &attr);
   // CCMC parts
   ccmc::Kameleon *kameleon_;
   // Interpolator can't be created until file has been opened!

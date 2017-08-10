@@ -7,140 +7,138 @@
 
 #include <Furnace.h>
 #include <cstdlib>
-#include <string>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <boost/program_options.hpp>
 
 namespace FurnaceApp {
-namespace options {
-    boost::program_options::variables_map opts;
-    const char* CONFIG  = "config";
-    const char* HELP    = "help";
-} // namespace options
+    namespace options {
+        boost::program_options::variables_map opts;
+        const char *CONFIG = "config";
+        const char *HELP = "help";
+    } // namespace options
 } // namespace FurnaceApp
 
 namespace options = boost::program_options;
 
 
-void parseOptions(int ac, char* av[], options::variables_map &vm) {
+void parseOptions(int ac, char *av[], options::variables_map &vm) {
     options::options_description desc("Options");
     desc.add_options()
-        (FurnaceApp::options::CONFIG, options::value<std::string>(), "configuration file")
-        (FurnaceApp::options::HELP, "print help")
-    ;
+            (FurnaceApp::options::CONFIG, options::value<std::string>(), "configuration file")
+            (FurnaceApp::options::HELP, "print help");
 
     options::store(options::parse_command_line(ac, av, desc), vm);
 }
 
-int main(int ac, char* av[]) {
+int main(int ac, char *av[]) {
 
-  // Read config (very simple implementation)
-  std::string sourceFolder = "";
-  std::string destFolder = "";
-  unsigned int xDim = 0, yDim = 0, zDim = 0;
-  std::string modelName = "";
-  osp::Furnace::ModelType modelType = osp::Furnace::NO_MODEL;
-  std::string gridName = "";
-  osp::Furnace::GridType gridType = osp::Furnace::NO_GRID;
-  std::string config = "config/furnaceConfig.txt";
+    // Read config (very simple implementation)
+    std::string sourceFolder = "";
+    std::string destFolder = "";
+    unsigned int xDim = 0, yDim = 0, zDim = 0;
+    std::string modelName = "";
+    osp::Furnace::ModelType modelType = osp::Furnace::NO_MODEL;
+    std::string gridName = "";
+    osp::Furnace::GridType gridType = osp::Furnace::NO_GRID;
+    std::string config = "config/furnaceConfig.txt";
 
 
-  parseOptions(ac, av, FurnaceApp::options::opts);
+    parseOptions(ac, av, FurnaceApp::options::opts);
 
-  if(FurnaceApp::options::opts.count(FurnaceApp::options::CONFIG)) {
-      config = FurnaceApp::options::opts[FurnaceApp::options::CONFIG].as<std::string>();
-  }
-
-  std::ifstream in;
-  in.open(config.c_str(), std::ifstream::in);
-  if (!in.is_open()) {
-    std::cerr << "Could not open config file: " << config << std::endl;
-    exit(1);
-  }
-
-  std::string line;
-  while (std::getline(in, line)) {
-    // Ignore empty lines and comments ('#')
-    if (!line.empty() && line.at(0) != '#') {
-      // Read variable name
-      std::stringstream ss;
-      ss.str(line);
-      std::string var;
-      ss >> var;
-      // Read value
-      if (var == "source_folder") {
-        ss >> sourceFolder;
-      } else if (var == "dest_folder") {
-        ss >> destFolder;
-      } else if (var == "grid_type") {
-        ss >> gridName;
-        if (gridName == "cartesian") {
-          gridType = osp::Furnace::CARTESIAN;
-        } else if (gridName == "spherical") {
-          gridType = osp::Furnace::SPHERICAL;
-        } else {
-          std::cerr << "Grid type " << gridName << " unknown" << std::endl;
-          exit(1);
-        }
-      } else if (var == "dimensions") {
-        ss >> xDim;
-        ss >> yDim;
-        ss >> zDim;
-      } else if (var == "model_name") {
-        ss >> modelName;
-        if (modelName == "ENLIL") {
-          modelType = osp::Furnace::ENLIL;
-        } else if (modelName == "ML") {
-          modelType = osp::Furnace::ML;
-        } else {
-          std::cerr << "Model name " << modelName << " unknown" << std::endl;
-          exit(1);
-        }
-      } else {
-        std::cerr << "Variable " << var << " unknown" << std::endl;
-        exit(1);
-      }
+    if (FurnaceApp::options::opts.count(FurnaceApp::options::CONFIG)) {
+        config = FurnaceApp::options::opts[FurnaceApp::options::CONFIG].as<std::string>();
     }
-  } // while getline
 
-  // Print chosen variables 
-  std::cout << "Running Furnace with the following settings: " << std::endl;
-  std::cout << "Source folder: " << sourceFolder << std::endl;
-  std::cout << "Destination folder: " << destFolder << std::endl;
-  std::cout << "Dimensions: " << xDim << " " << yDim << " " << zDim<<std::endl;
-  std::cout << "Model: " << modelName << std::endl;
-  std::cout << "Grid: " << gridName << std::endl;
+    std::ifstream in;
+    in.open(config.c_str(), std::ifstream::in);
+    if (!in.is_open()) {
+        std::cerr << "Could not open config file: " << config << std::endl;
+        exit(1);
+    }
 
-  // Create a Furnace instance 
-  osp::Furnace *furnace = osp::Furnace::New();
-  
-  if (!furnace) {
-    std::cerr << "Failed to create Furnace instance" << std::endl;
-    exit(1);
-  }
+    std::string line;
+    while (std::getline(in, line)) {
+        // Ignore empty lines and comments ('#')
+        if (!line.empty() && line.at(0) != '#') {
+            // Read variable name
+            std::stringstream ss;
+            ss.str(line);
+            std::string var;
+            ss >> var;
+            // Read value
+            if (var == "source_folder") {
+                ss >> sourceFolder;
+            } else if (var == "dest_folder") {
+                ss >> destFolder;
+            } else if (var == "grid_type") {
+                ss >> gridName;
+                if (gridName == "cartesian") {
+                    gridType = osp::Furnace::CARTESIAN;
+                } else if (gridName == "spherical") {
+                    gridType = osp::Furnace::SPHERICAL;
+                } else {
+                    std::cerr << "Grid type " << gridName << " unknown" << std::endl;
+                    exit(1);
+                }
+            } else if (var == "dimensions") {
+                ss >> xDim;
+                ss >> yDim;
+                ss >> zDim;
+            } else if (var == "model_name") {
+                ss >> modelName;
+                if (modelName == "ENLIL") {
+                    modelType = osp::Furnace::ENLIL;
+                } else if (modelName == "ML") {
+                    modelType = osp::Furnace::ML;
+                } else {
+                    std::cerr << "Model name " << modelName << " unknown" << std::endl;
+                    exit(1);
+                }
+            } else {
+                std::cerr << "Variable " << var << " unknown" << std::endl;
+                exit(1);
+            }
+        }
+    } // while getline
 
-  // Set variables from config
+    // Print chosen variables
+    std::cout << "Running Furnace with the following settings: " << std::endl;
+    std::cout << "Source folder: " << sourceFolder << std::endl;
+    std::cout << "Destination folder: " << destFolder << std::endl;
+    std::cout << "Dimensions: " << xDim << " " << yDim << " " << zDim << std::endl;
+    std::cout << "Model: " << modelName << std::endl;
+    std::cout << "Grid: " << gridName << std::endl;
 
-  // Setting the model also initialized the reader
-  if (!furnace->SetModelType(modelType)) {
-    std::cerr << "Failed to set model type" << std::endl;
-    exit(1);
-  }
-  furnace->SetGridType(gridType);
-  furnace->SetDimensions(xDim, yDim, zDim);
-  furnace->SetSourceFolder(sourceFolder);
-  furnace->SetDestFolder(destFolder);
+    // Create a Furnace instance
+    osp::Furnace *furnace = osp::Furnace::New();
 
-  // Read folder
-  if (!furnace->ProcessFolder()) {
-    std::cerr << "Furnace failed to process folder" << std::endl;
-    exit(1);
-  }
+    if (!furnace) {
+        std::cerr << "Failed to create Furnace instance" << std::endl;
+        exit(1);
+    }
 
-  // Clean up and exit
-  delete furnace;
-  exit(0);
+    // Set variables from config
+
+    // Setting the model also initialized the reader
+    if (!furnace->SetModelType(modelType)) {
+        std::cerr << "Failed to set model type" << std::endl;
+        exit(1);
+    }
+    furnace->SetGridType(gridType);
+    furnace->SetDimensions(xDim, yDim, zDim);
+    furnace->SetSourceFolder(sourceFolder);
+    furnace->SetDestFolder(destFolder);
+
+    // Read folder
+    if (!furnace->ProcessFolder()) {
+        std::cerr << "Furnace failed to process folder" << std::endl;
+        exit(1);
+    }
+
+    // Clean up and exit
+    delete furnace;
+    exit(0);
 
 }

@@ -11,69 +11,68 @@
 
 using namespace osp;
 
-Furnace::Furnace() 
-  : volumeProcessor_(NULL), 
-    sourceFolder_("NotSet"),
-    destFolder_("NotSet") {
-}
+Furnace::Furnace()
+    : volumeProcessor_(NULL)
+    , sourceFolder_("NotSet")
+    , destFolder_("NotSet") { }
 
 Furnace::~Furnace() {
-  if (volumeProcessor_) delete volumeProcessor_;
+    if (volumeProcessor_) delete volumeProcessor_;
 }
 
-Furnace * Furnace::New() {
-  return new Furnace();
+Furnace *Furnace::New() {
+    return new Furnace();
 }
 
 void Furnace::SetSourceFolder(const std::string &_sourceFolder) {
-  sourceFolder_ = _sourceFolder;
+    sourceFolder_ = _sourceFolder;
 }
 
 void Furnace::SetDestFolder(const std::string &_destFolder) {
-  destFolder_ = _destFolder;
+    destFolder_ = _destFolder;
 }
 
 void Furnace::SetGridType(GridType _gridType) {
-  volumeProcessor_->SetGridType(static_cast<unsigned int>(_gridType));
+    volumeProcessor_->SetGridType(static_cast<unsigned int>(_gridType));
 }
 
 void Furnace::SetDimensions(unsigned int _xDim,
                             unsigned int _yDim,
                             unsigned int _zDim) {
-  if (!volumeProcessor_) {
-    std::cerr << "Trying to set dimensions without a reader" << std::endl;
-  } else {
-    volumeProcessor_->SetDimensions(_xDim, _yDim, _zDim);
-  }
+    if (!volumeProcessor_) {
+        std::cerr << "Trying to set dimensions without a reader" << std::endl;
+    } else {
+        volumeProcessor_->SetDimensions(_xDim, _yDim, _zDim);
+    }
 }
 
 bool Furnace::ProcessFolder() {
-  if (!volumeProcessor_) {
-    std::cerr << "Cannot process folder without a reader" << std::endl;
-    return false;
-  }
-  if (!volumeProcessor_->ProcessFolder(sourceFolder_, destFolder_)) {
-    std::cerr << "Failed to process folder " << sourceFolder_ << std::endl;
-  }
-  return true;
+    if (!volumeProcessor_) {
+        std::cerr << "Cannot process folder without a reader" << std::endl;
+        return false;
+    }
+    if (!volumeProcessor_->ProcessFolder(sourceFolder_, destFolder_)) {
+        std::cerr << "Failed to process folder " << sourceFolder_ << std::endl;
+    }
+    return true;
 }
 
 
 bool Furnace::SetModelType(ModelType _modelType) {
 
-  if (volumeProcessor_) {
-    std::cout << "Warning: Model already set" << std::endl;
-    delete volumeProcessor_;
-  }
+    if (volumeProcessor_) {
+        std::cout << "Warning: Model already set" << std::endl;
+        delete volumeProcessor_;
+    }
 
-  if (_modelType == ENLIL) {
-    volumeProcessor_ = ENLILProcessor::New();
-  } else if (_modelType == ML) {
-    volumeProcessor_ = MLProcessor::New();
-  } else {
-    std::cerr << "Unknown model type" << std::endl;
-    return false;
-  }
+    if (_modelType == ENLIL) {
+        volumeProcessor_ = ENLILProcessor::New();
+    } else if (_modelType == ML) {
+        volumeProcessor_ = MLProcessor::New();
+    } else {
+        std::cerr << "Unknown model type" << std::endl;
+        return false;
+    }
 
-  return true;
+    return true;
 }

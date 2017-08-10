@@ -5,7 +5,6 @@
 
 #include <MLProcessor.h>
 #include <iostream>
-#include <stdio.h>
 #include <fstream>
 #include <set>
 #include <boost/filesystem.hpp>
@@ -14,140 +13,138 @@
 using namespace osp;
 namespace fs = boost::filesystem;
 
-MLProcessor::MLProcessor() : VolumeProcessor() {
+MLProcessor::MLProcessor() : VolumeProcessor() { }
+
+MLProcessor *MLProcessor::New() {
+    return new MLProcessor();
 }
 
-MLProcessor * MLProcessor::New() {
-  return new MLProcessor();
-}
-
-MLProcessor::~MLProcessor() {
-}
+MLProcessor::~MLProcessor() { }
 
 bool MLProcessor::ProcessFolder(const std::string &_sourceFolder,
                                 const std::string &_destFolder) {
 
-  std::cout << "Processing " << _sourceFolder << std::endl;
+    std::cout << "Processing " << _sourceFolder << std::endl;
 
-  // See if path exists
-  if (!fs::exists(_sourceFolder)) {
-    std::cerr << "The path " << _sourceFolder<<" does not exist"<<std::endl;
-    return false;
-  }
-
-  // See if path is a directory
-  if (!fs::is_directory(_sourceFolder)) {
-    std::cerr <<"The path "<< _sourceFolder<< " is not a directory"<<std::endl;
-    return false;
-  }
-
-  // Read config file for Marschner-Lobb data set
-  std::string MLConfigPath = _sourceFolder + "MLConfig.txt";
-  float f_m = 0.f, alpha = 0.f;
-
-  std::ifstream in;
-  in.open(MLConfigPath.c_str(), std::ifstream::in);
-  if (!in.is_open()) {
-    std::cerr << "Could not open ML config file: " << MLConfigPath<<std::endl;
-    return false;
-  }
-  
-  std::string line;
-  while (std::getline(in, line)) {
-    // Ignore empty lines and comments ('#')
-    if (!line.empty() && line.at(0) != '#') {
-      // Read variable name
-      std::stringstream ss;
-      ss.str(line);
-      std::string var;
-      ss >> var;
-      // Read value
-      if (var == "f_m") {
-        ss >> f_m;
-        std::cout << "f_m: " << f_m << std::endl;
-      } else if (var == "alpha") {
-        ss >> alpha;
-        std::cout << "alpha: " << alpha << std::endl;
-      } else if (var == "num_timesteps") {
-        ss >> numTimesteps_;
-        std::cout << "num timesteps: " << numTimesteps_ << std::endl;
-      } else {
-        std::cerr << "Variable " << var << " unrecognized" << std::endl;
+    // See if path exists
+    if (!fs::exists(_sourceFolder)) {
+        std::cerr << "The path " << _sourceFolder << " does not exist" << std::endl;
         return false;
-      }
     }
-  }
-  in.close();
 
-  data_.resize(static_cast<size_t>(numVoxelsPerTimestep_));
+    // See if path is a directory
+    if (!fs::is_directory(_sourceFolder)) {
+        std::cerr << "The path " << _sourceFolder << " is not a directory" << std::endl;
+        return false;
+    }
 
-  // Write header file
-  if (!WriteHeader(_destFolder)) {
-    std::cerr << "Failed to write header" << std::endl;
-  }
+    // Read config file for Marschner-Lobb data set
+    std::string MLConfigPath = _sourceFolder + "MLConfig.txt";
+    float f_m = 0.f, alpha = 0.f;
 
-  // Write each time step to a separate file
-  for (unsigned int ts=0; ts<numTimesteps_; ++ts) {
+    std::ifstream in;
+    in.open(MLConfigPath.c_str(), std::ifstream::in);
+    if (!in.is_open()) {
+        std::cerr << "Could not open ML config file: " << MLConfigPath << std::endl;
+        return false;
+    }
 
-    // period from 0 to 2PI
-    float period = (2.f*M_PI*static_cast<float>(ts) / 
-                   static_cast<float>(numTimesteps_));
-    
-    // Loop over volume and calculate values
-    for (unsigned int z=0; z<zDim_; ++z) {
-      for (unsigned int y=0; y<yDim_; ++y) {
-        for (unsigned int x=0; x<xDim_; ++x) {
-          
-          // Scale [0,1] coord to [-1, 1]
-          float xf = (static_cast<float>(x)/static_cast<float>(xDim_))*2.f-1.f; 
-          float yf = (static_cast<float>(y)/static_cast<float>(yDim_))*2.f-1.f;
-          float zf = (static_cast<float>(z)/static_cast<float>(zDim_))*2.f-1.f;
-          
-          float r = sqrt(xf*xf+yf*yf);
-          float p_r = cos(period+2.f*M_PI*f_m*cos(M_PI*r/2.f));
-          float rho = ((1.f-sin(M_PI*zf/2.f))+alpha*(1.f + p_r)) / 
-                      (2.f*(1.f+alpha));
-
-          unsigned int index = x + y*xDim_ + z*xDim_*yDim_;
-          data_[index] = rho;
-
-          // Update min/max
-          if (rho > max_) { 
-            max_ = rho;
-          } else if (rho < min_) {
-            min_ = rho;
-          }
-
+    std::string line;
+    while (std::getline(in, line)) {
+        // Ignore empty lines and comments ('#')
+        if (!line.empty() && line.at(0) != '#') {
+            // Read variable name
+            std::stringstream ss;
+            ss.str(line);
+            std::string var;
+            ss >> var;
+            // Read value
+            if (var == "f_m") {
+                ss >> f_m;
+                std::cout << "f_m: " << f_m << std::endl;
+            } else if (var == "alpha") {
+                ss >> alpha;
+                std::cout << "alpha: " << alpha << std::endl;
+            } else if (var == "num_timesteps") {
+                ss >> numTimesteps_;
+                std::cout << "num timesteps: " << numTimesteps_ << std::endl;
+            } else {
+                std::cerr << "Variable " << var << " unrecognized" << std::endl;
+                return false;
+            }
         }
-      }
     }
-    
-  
-    std::string timestepStr = boost::lexical_cast<std::string>(ts);
-    std::string tsPath = _destFolder + timestepFilename_ + timestepStr +
-      timestepSuffix_;
+    in.close();
 
-    std::FILE *out = fopen(tsPath.c_str(), "w");
-    if (!out) {
-      std::cerr << "Failed to init " << tsPath << std::endl;
-      return false;
+    data_.resize(static_cast<size_t>(numVoxelsPerTimestep_));
+
+    // Write header file
+    if (!WriteHeader(_destFolder)) {
+        std::cerr << "Failed to write header" << std::endl;
     }
-    
-    size_t s = sizeof(float)*static_cast<size_t>(numVoxelsPerTimestep_);
-    fwrite(reinterpret_cast<float*>(&data_[0]), s, 1, out); 
 
-    fclose(out);
+    // Write each time step to a separate file
+    for (unsigned int ts = 0; ts < numTimesteps_; ++ts) {
 
-  }
+        // period from 0 to 2PI
+        float period = (2.f * M_PI * static_cast<float>(ts) /
+                        static_cast<float>(numTimesteps_));
 
-  // Gather temp files, normalize and write to single output
-  if (!WriteFinal(_destFolder)) {
-    std::cerr << "Failed to write final file" << std::endl;
-    return false;
-  }
+        // Loop over volume and calculate values
+        for (unsigned int z = 0; z < zDim_; ++z) {
+            for (unsigned int y = 0; y < yDim_; ++y) {
+                for (unsigned int x = 0; x < xDim_; ++x) {
 
-  // Delete temp files
-  DeleteTempFiles(_destFolder);
+                    // Scale [0,1] coord to [-1, 1]
+                    float xf = (static_cast<float>(x) / static_cast<float>(xDim_)) * 2.f - 1.f;
+                    float yf = (static_cast<float>(y) / static_cast<float>(yDim_)) * 2.f - 1.f;
+                    float zf = (static_cast<float>(z) / static_cast<float>(zDim_)) * 2.f - 1.f;
 
-  return true;
+                    float r = sqrt(xf * xf + yf * yf);
+                    float p_r = cos(period + 2.f * M_PI * f_m * cos(M_PI * r / 2.f));
+                    float rho = ((1.f - sin(M_PI * zf / 2.f)) + alpha * (1.f + p_r)) /
+                                (2.f * (1.f + alpha));
+
+                    unsigned int index = x + y * xDim_ + z * xDim_ * yDim_;
+                    data_[index] = rho;
+
+                    // Update min/max
+                    if (rho > max_) {
+                        max_ = rho;
+                    } else if (rho < min_) {
+                        min_ = rho;
+                    }
+
+                }
+            }
+        }
+
+
+        std::string timestepStr = boost::lexical_cast<std::string>(ts);
+        std::string tsPath = _destFolder + timestepFilename_ + timestepStr +
+                             timestepSuffix_;
+
+        std::FILE *out = fopen(tsPath.c_str(), "w");
+        if (!out) {
+            std::cerr << "Failed to init " << tsPath << std::endl;
+            return false;
+        }
+
+        size_t s = sizeof(float) * static_cast<size_t>(numVoxelsPerTimestep_);
+        fwrite(reinterpret_cast<float *>(&data_[0]), s, 1, out);
+
+        fclose(out);
+
+    }
+
+    // Gather temp files, normalize and write to single output
+    if (!WriteFinal(_destFolder)) {
+        std::cerr << "Failed to write final file" << std::endl;
+        return false;
+    }
+
+    // Delete temp files
+    DeleteTempFiles(_destFolder);
+
+    return true;
 }

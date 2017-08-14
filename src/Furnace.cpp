@@ -8,16 +8,24 @@
 #include <ENLILProcessor.h>
 #include <MLProcessor.h>
 #include <iostream>
+#include <unordered_map>
+
 
 using namespace osp;
 
+const std::unordered_map<std::string, Furnace::ModelType> Furnace::MODEL_TYPES = {
+        {"ENLIL", ModelType::ENLIL},
+        {"ML", ModelType::ML},
+        {"BATSRUS", ModelType::BATSRUS}
+};
+
 Furnace::Furnace()
-    : volumeProcessor_(NULL)
+    : volumeProcessor_(nullptr)
     , sourceFolder_("NotSet")
     , destFolder_("NotSet") { }
 
 Furnace::~Furnace() {
-    if (volumeProcessor_) delete volumeProcessor_;
+    delete volumeProcessor_;
 }
 
 Furnace *Furnace::New() {

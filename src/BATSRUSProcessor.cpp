@@ -6,12 +6,15 @@
 #include <BATSRUSProcessor.h>
 #include <ccmc/Kameleon.h>
 #include <iostream>
-#include <stdio.h>
+
 #include <boost/filesystem.hpp>
-#include <set>
+#include <boost/asio.hpp>
+#include <boost/thread.hpp>
+
 
 using namespace osp;
 namespace fs = boost::filesystem;
+namespace as = boost::asio;
 
 BATSRUSProcessor::BATSRUSProcessor(ccmc::Kameleon *_kameleon)
     : VolumeProcessor()
@@ -49,9 +52,10 @@ bool BATSRUSProcessor::ProcessFolder(const std::string &_sourceFolder,
 
     // Insert the filenames in folder into a set to keep them ordered
     std::set<fs::path> filenames;
-    for (fs::directory_iterator it(_sourceFolder);
-         it != fs::directory_iterator(); ++it) {
-        filenames.insert(it->path());
+    for (fs::directory_iterator it(_sourceFolder); it != fs::directory_iterator(); ++it) {
+        if (testSuffix(it->path(), VolumeProcessor::cdfSuffix)) {
+            filenames.insert(it->path());
+        }
     }
 
     // Check dimensions
@@ -125,14 +129,6 @@ bool BATSRUSProcessor::ProcessFile(const std::string &_filename,
         return false;
     }
 
-    // Create interpolator (has to be done after file is opened)
-    interpolator_ = kameleon_->createNewInterpolator();
-
-    if (!interpolator_) {
-        std::cerr << "Failed to create interpolator" << std::endl;
-        return false;
-    }
-
     // Get variable limits from model
     float rMin =
             kameleon_->getVariableAttribute("r", "actual_min").getAttributeFloat();
@@ -147,9 +143,30 @@ bool BATSRUSProcessor::ProcessFile(const std::string &_filename,
     float phiMax =
             kameleon_->getVariableAttribute("phi", "actual_max").getAttributeFloat();
 
+
+    // Create interpolator (has to be done after file is opened)
+    ccmc::Interpolator *interpolator = kameleon_->createNewInterpolator();
+
+    if (!interpolator) {
+        std::cerr << "Failed to create interpolator" << std::endl;
+        return false;
+    }
+
     // Loop over volume
     // [x, y, z] -> [r, theta, phi] for spherical model
-    // TODO: Parallelize
+    // TODO: Parallelize http://think-async.com/Asio/Recipes?skin=clean.nat,asio,pattern#A_thread_pool_for_executing_arbi
+
+    /*
+    as::io_service io_service;
+    as::io_service::work work(io_service);
+
+    const size_t threadCount = boost::thread::hardware_concurrency();
+    boost::thread_group threads;
+    for (std::size_t i = 0; i < threadCount; ++i) {
+        threads.create_thread(boost::bind(&as::io_service::run, &io_service));
+    }
+     */
+
     for (size_t phi = 0; phi < zDim_; ++phi) {
         size_t progress = (size_t) (((float) phi / (float) zDim_) * 100.f);
         if (progress % 10 == 0) {
@@ -158,71 +175,18 @@ bool BATSRUSProcessor::ProcessFile(const std::string &_filename,
         }
         for (size_t theta = 0; theta < yDim_; ++theta) {
             for (size_t r = 0; r < xDim_; ++r) {
-
-                // Calculate array index
-                size_t index = r + theta * xDim_ + phi * xDim_ * yDim_;
-
-                // Put r in the [0..sqrt(3)] range
-                float rNorm = sqrt(3.0) * (float) r / (float) (xDim_ - 1);
-
-                // Put theta in the [0..PI] range
-                float thetaNorm = M_PI * (float) theta / (float) (yDim_ - 1);
-
-                // Put phi in the [0..2PI] range
-                float phiNorm = 2.0 * M_PI * (float) phi / (float) (zDim_ - 1);
-
-                // Go to physical coordinates before sampling
-                float rPh = rMin + rNorm * (rMax - rMin);
-                float thetaPh = thetaNorm;
-                //phi range needs to be mapped to the slightly different
-                // model range to avoid gaps in the data
-                // Subtract a small term to avoid rounding errors when comparing
-                // to phiMax.
-                float phiPh = phiMin + phiNorm / (2.0 * M_PI) * (phiMax - phiMin - 0.000001);
-
-                // Hardcoded variables (rho or rho - rho_back)
-                // TODO Don't hardcode, make more flexible
-                float rho = 0.f, rho_back = 0.f, diff = 0.f;
-                // See if sample point is inside domain
-                if (rPh < rMin || rPh > rMax || thetaPh < thetaMin ||
-                    thetaPh > thetaMax || phiPh < phiMin || phiPh > phiMax) {
-                    if (phiPh > phiMax) {
-                        std::cout << "Warning: There might be a gap in the data\n";
-                    }
-                    // Leave values at zero if outside domain
-                } else { // if inside
-
-                    // ENLIL CDF specific hacks!
-                    // Convert from meters to AU for interpolator
-                    rPh /= ccmc::constants::AU_in_meters;
-                    // Convert from colatitude [0, pi] rad to latitude [-90, 90] degrees
-                    thetaPh = -thetaPh * 180.f / M_PI + 90.f;
-                    // Convert from [0, 2pi] rad to [0, 360] degrees
-                    phiPh = phiPh * 180.f / M_PI;
-                    // Sample
-                    rho = interpolator_->interpolate("rho", rPh, thetaPh, phiPh);
-                    rho_back = interpolator_->interpolate("rho-back", rPh, thetaPh, phiPh);
-
-                    // Calculate difference (or just rho)
-                    diff = rho;
-                    //diff = rho - rho_back;
-
-                    // Clamp to 0
-                    if (diff < 0.f) diff = 0.f;
-                }
-
-                // Update min/max
-                if (diff > max_) {
-                    max_ = diff;
-                } else if (diff < min_) {
-                    min_ = diff;
-                }
-
-                data_[index] = diff;
+                AttributeObject attr = {r, rMin, rMax, theta, thetaMin, thetaMax, phi, phiMin, phiMax};
+                //io_service.post(boost::bind(&BATSRUSProcessor::fileWorker, this, attr, interpolator));
+                fileWorker(attr, interpolator);
 
             } // r
         } // theta
     } // phi
+
+    /*
+    io_service.stop();
+    threads.join_all();
+     */
 
     std::cout << "Processing timestep " << _timestep + 1 << "/"
               << numTimesteps_ << ", 100%   \r" << std::flush;
@@ -243,5 +207,80 @@ bool BATSRUSProcessor::ProcessFile(const std::string &_filename,
            out);
     fclose(out);
 
+    return true;
+}
+
+bool BATSRUSProcessor::fileWorker(AttributeObject &attr, ccmc::Interpolator *interpolator) {
+    size_t r = attr.r,
+            theta = attr.theta,
+            phi = attr.phi;
+
+    float rMax = attr.rMax,
+            rMin = attr.rMin,
+            thetaMin = attr.thetaMin,
+            thetaMax = attr.thetaMax,
+            phiMin = attr.phiMin,
+            phiMax = attr.phiMax;
+
+    // Calculate array index
+    size_t index = r + theta * this->xDim_ + phi * this->xDim_ * this->yDim_;
+
+    // Put r in the [0..sqrt(3)] range
+    float rNorm = sqrt(3.0) * (float) r / (float) (this->xDim_ - 1);
+
+    // Put theta in the [0..PI] range
+    float thetaNorm = M_PI * (float) theta / (float) (this->yDim_ - 1);
+
+    // Put phi in the [0..2PI] range
+    float phiNorm = 2.0 * M_PI * (float) phi / (float) (this->zDim_ - 1);
+
+    // Go to physical coordinates before sampling
+    float rPh = rMin + rNorm * (rMax - rMin);
+    float thetaPh = thetaNorm;
+    //phi range needs to be mapped to the slightly different
+    // model range to avoid gaps in the data
+    // Subtract a small term to avoid rounding errors when comparing
+    // to phiMax.
+    float phiPh = phiMin + phiNorm / (2.0 * M_PI) * (phiMax - phiMin - 0.000001);
+
+    // Hardcoded variables (rho or rho - rho_back)
+    // TODO Don't hardcode, make more flexible
+    float rho = 0.f, rho_back = 0.f, diff = 0.f;
+    // See if sample point is inside domain
+    if (rPh < rMin || rPh > rMax || thetaPh < thetaMin ||
+        thetaPh > thetaMax || phiPh < phiMin || phiPh > phiMax) {
+        if (phiPh > phiMax) {
+            std::__1::cout << "Warning: There might be a gap in the data\n";
+        }
+        // Leave values at zero if outside domain
+    } else { // if inside
+
+        // ENLIL CDF specific hacks!
+        // Convert from meters to AU for interpolator
+        rPh /= ccmc::constants::AU_in_meters;
+        // Convert from colatitude [0, pi] rad to latitude [-90, 90] degrees
+        thetaPh = -thetaPh * 180.f / M_PI + 90.f;
+        // Convert from [0, 2pi] rad to [0, 360] degrees
+        phiPh = phiPh * 180.f / M_PI;
+        // Sample
+        rho = interpolator->interpolate("rho", rPh, thetaPh, phiPh);
+        rho_back = interpolator->interpolate("rho-back", rPh, thetaPh, phiPh);
+
+        // Calculate difference (or just rho)
+        diff = rho;
+        //diff = rho - rho_back;
+
+        // Clamp to 0
+        if (diff < 0.f) diff = 0.f;
+    }
+
+    // Update min/max
+    if (diff > this->max_) {
+        this->max_ = diff;
+    } else if (diff < this->min_) {
+        this->min_ = diff;
+    }
+
+    this->data_[index] = diff;
     return true;
 }

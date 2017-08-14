@@ -35,14 +35,16 @@ void parseOptions(int ac, char *av[], options::variables_map &vm) {
 int main(int ac, char *av[]) {
 
     // Read config (very simple implementation)
-    std::string sourceFolder = "";
-    std::string destFolder = "";
-    size_t xDim = 0, yDim = 0, zDim = 0;
-    std::string modelName = "";
-    osp::Furnace::ModelType modelType = osp::Furnace::NO_MODEL;
-    std::string gridName = "";
-    osp::Furnace::GridType gridType = osp::Furnace::NO_GRID;
+    std::string sourceFolder;
+    std::string destFolder;
+    std::string gridName;
+    std::string modelName;
     std::string config = "config/furnaceConfig.txt";
+
+    size_t xDim = 0, yDim = 0, zDim = 0;
+
+    osp::Furnace::ModelType modelType = osp::Furnace::NO_MODEL;
+    osp::Furnace::GridType gridType = osp::Furnace::NO_GRID;
 
 
     parseOptions(ac, av, FurnaceApp::options::opts);
@@ -88,13 +90,11 @@ int main(int ac, char *av[]) {
                 ss >> zDim;
             } else if (var == "model_name") {
                 ss >> modelName;
-                if (modelName == "ENLIL") {
-                    modelType = osp::Furnace::ENLIL;
-                } else if (modelName == "ML") {
-                    modelType = osp::Furnace::ML;
-                } else {
+                try {
+                    modelType = osp::Furnace::MODEL_TYPES.at(modelName);
+                } catch (std::out_of_range& e){
                     std::cerr << "Model name " << modelName << " unknown" << std::endl;
-                    exit(1);
+                    throw e;
                 }
             } else {
                 std::cerr << "Variable " << var << " unknown" << std::endl;

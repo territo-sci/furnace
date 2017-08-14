@@ -7,6 +7,7 @@
 #define FURNACE_H_
 
 #include <string>
+#include <unordered_map>
 
 namespace osp {
 
@@ -18,6 +19,7 @@ public:
     enum ModelType {
         ENLIL = 0,
         ML,
+        BATSRUS,
         NO_MODEL
     };
 
@@ -27,6 +29,8 @@ public:
         SPHERICAL = 1,
         NO_GRID
     };
+
+    static const std::unordered_map<std::string, ModelType> MODEL_TYPES;
 
     static Furnace *New();
     ~Furnace();

@@ -19,13 +19,26 @@ namespace osp {
 
 class BATSRUSProcessor : public VolumeProcessor {
 public:
+    struct AttributeObject {
+        size_t r;
+        float rMin;
+        float rMax;
+        size_t phi;
+        float phiMin;
+        float phiMax;
+        size_t theta;
+        float thetaMin;
+        float thetaMax;
+    };
+
     // Initializes Kameleon and Interpolator objects, returns BATSRUSProcessor
     static BATSRUSProcessor *New();
 
     ~BATSRUSProcessor();
 
     // Process a folder with one CDF file per timestep
-    virtual bool ProcessFolder(const std::string &_sourceFolder, const std::string &_destFolder);
+    virtual bool ProcessFolder(const std::string &_sourceFolder,
+                               const std::string &_destFolder);
 
 private:
     BATSRUSProcessor();
@@ -38,6 +51,8 @@ private:
     bool ProcessFile(const std::string &_filename,
                      const std::string &_destFolder,
                      size_t _timestep);
+
+    bool fileWorker(AttributeObject &attr, ccmc::Interpolator *interpolator);
 
     // CCMC parts
     ccmc::Kameleon *kameleon_;

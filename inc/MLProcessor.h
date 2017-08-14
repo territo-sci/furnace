@@ -17,7 +17,7 @@ public:
 
     // Folder includes a single text file with constants for data set
     virtual bool ProcessFolder(const std::string &_sourceFolder,
-                               const std::string &_destFolder);
+                               const std::string &_destFolder) override;
 
 private:
     MLProcessor();

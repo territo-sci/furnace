@@ -15,11 +15,12 @@ link_directories(${Boost_LIBRARY_DIR})
 link_directories(${OPENSPACE_DIR}/bin/lib)
 
 add_executable(FurnaceApp 
-	       FurnaceApp.cpp
-	       ENLILProcessor.cpp 
-	       MLProcessor.cpp
-	       VolumeProcessor.cpp 
-	       Furnace.cpp)
+    FurnaceApp.cpp
+    ENLILProcessor.cpp
+    BATSRUSProcessor.cpp
+    MLProcessor.cpp
+    VolumeProcessor.cpp
+    Furnace.cpp)
 
 target_link_libraries(FurnaceApp ${Boost_LIBRARIES})
 target_link_libraries(FurnaceApp libcdf.a)

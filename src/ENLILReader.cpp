@@ -61,7 +61,7 @@ bool ENLILReader::ProcessFolder(const std::string &_sourceFolder,
     }
 
     // Set number of timesteps (number of files in folder)
-    numTimesteps_ = static_cast<unsigned int>(filenames.size());
+    numTimesteps_ = static_cast<size_t>(filenames.size());
     std::cout << "Found " << numTimesteps_ << " timesteps" << std::endl;
     // Allocate space for one timestep
     size_t nvpts = static_cast<size_t>(numVoxelsPerTimestep_);
@@ -78,7 +78,7 @@ bool ENLILReader::ProcessFolder(const std::string &_sourceFolder,
     }
 
     // process the individual timesteps
-    unsigned int timestep = 0;
+    size_t timestep = 0;
     for (auto it = filenames.begin(); it != filenames.end(); ++it) {
         if (!ProcessFile(it->string(), _destFolder, timestep++)) {
             std::cerr << "Failed to read timestep " << timestep << std::endl;
@@ -109,7 +109,7 @@ bool ENLILReader::ProcessFolder(const std::string &_sourceFolder,
 
 bool ENLILReader::ProcessFile(const std::string &_filename,
                               const std::string &_destFolder,
-                              unsigned int _timestep) {
+                              size_t _timestep) {
 
     std::string timestepStr = boost::lexical_cast<std::string>(_timestep);
     std::string fullPath = _destFolder + timestepFilename_ + timestepStr +
@@ -153,17 +153,17 @@ bool ENLILReader::ProcessFile(const std::string &_filename,
     // Loop over volume
     // [x, y, z] -> [r, theta, phi] for spherical model
     // TODO: Parallelize
-    for (unsigned int phi = 0; phi < zDim_; ++phi) {
-        unsigned int progress = (unsigned int) (((float) phi / (float) zDim_) * 100.f);
+    for (size_t phi = 0; phi < zDim_; ++phi) {
+        size_t progress = (size_t) (((float) phi / (float) zDim_) * 100.f);
         if (progress % 10 == 0) {
             std::cout << "Processing timestep " << _timestep + 1 << "/"
                       << numTimesteps_ << ", " << progress << "%\r" << std::flush;
         }
-        for (unsigned int theta = 0; theta < yDim_; ++theta) {
-            for (unsigned int r = 0; r < xDim_; ++r) {
+        for (size_t theta = 0; theta < yDim_; ++theta) {
+            for (size_t r = 0; r < xDim_; ++r) {
 
                 // Calculate array index
-                unsigned int index = r + theta * xDim_ + phi * xDim_ * yDim_;
+                size_t index = r + theta * xDim_ + phi * xDim_ * yDim_;
 
                 // Put r in the [0..sqrt(3)] range
                 float rNorm = sqrt(3.0) * (float) r / (float) (xDim_ - 1);

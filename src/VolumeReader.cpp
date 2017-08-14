@@ -26,16 +26,16 @@ VolumeReader::VolumeReader()
 
 VolumeReader::~VolumeReader() { }
 
-void VolumeReader::SetDimensions(unsigned int _xDim,
-                                 unsigned int _yDim,
-                                 unsigned int _zDim) {
+void VolumeReader::SetDimensions(size_t _xDim,
+                                 size_t _yDim,
+                                 size_t _zDim) {
     xDim_ = _xDim;
     yDim_ = _yDim;
     zDim_ = _zDim;
     numVoxelsPerTimestep_ = xDim_ * yDim_ * zDim_;
 }
 
-void VolumeReader::SetGridType(unsigned int _gridType) {
+void VolumeReader::SetGridType(size_t _gridType) {
     gridType_ = _gridType;
 }
 
@@ -66,11 +66,11 @@ bool VolumeReader::WriteHeader(const std::string &_destFolder) {
     std::cout << "Num timesteps: " << numTimesteps_ << std::endl;
     std::cout << "Dimensions: " << xDim_ << " " << yDim_ << " " << zDim_ << std::endl;
 
-    out.write(reinterpret_cast<char *>(&gridType_), sizeof(unsigned int));
-    out.write(reinterpret_cast<char *>(&numTimesteps_), sizeof(unsigned int));
-    out.write(reinterpret_cast<char *>(&xDim_), sizeof(unsigned int));
-    out.write(reinterpret_cast<char *>(&yDim_), sizeof(unsigned int));
-    out.write(reinterpret_cast<char *>(&zDim_), sizeof(unsigned int));
+    out.write(reinterpret_cast<char *>(&gridType_), sizeof(size_t));
+    out.write(reinterpret_cast<char *>(&numTimesteps_), sizeof(size_t));
+    out.write(reinterpret_cast<char *>(&xDim_), sizeof(size_t));
+    out.write(reinterpret_cast<char *>(&yDim_), sizeof(size_t));
+    out.write(reinterpret_cast<char *>(&zDim_), sizeof(size_t));
 
     out.close();
 
@@ -118,7 +118,7 @@ bool VolumeReader::WriteFinal(const std::string &_destFolder) {
     // Read timesteps
     // Process each file in turn
     float *floatBuffer = new float[numVoxelsPerTimestep_];
-    for (unsigned int i = 0; i < numTimesteps_; ++i) {
+    for (size_t i = 0; i < numTimesteps_; ++i) {
 
 
         std::string timestepStr = boost::lexical_cast<std::string>(i);
@@ -138,7 +138,7 @@ bool VolumeReader::WriteFinal(const std::string &_destFolder) {
 
 
         // Normalize
-        for (unsigned int j = 0; j < numVoxelsPerTimestep_; ++j) {
+        for (size_t j = 0; j < numVoxelsPerTimestep_; ++j) {
             floatBuffer[j] = (floatBuffer[j] - min_) / (max_ - min_);
         }
 
@@ -200,11 +200,11 @@ bool VolumeReader::Write(const std::string &_outFilename) {
   std::cout << "Num timesteps: " << numTimesteps_ << std::endl;
   std::cout << "Dimensions: "<<xDim_<< " " << yDim_<< " " << zDim_<< std::endl;
 
-  out.write(reinterpret_cast<char*>(&gridType_), sizeof(unsigned int));
-  out.write(reinterpret_cast<char*>(&numTimesteps_), sizeof(unsigned int));
-  out.write(reinterpret_cast<char*>(&xDim_), sizeof(unsigned int));
-  out.write(reinterpret_cast<char*>(&yDim_), sizeof(unsigned int));
-  out.write(reinterpret_cast<char*>(&zDim_), sizeof(unsigned int));
+  out.write(reinterpret_cast<char*>(&gridType_), sizeof(size_t));
+  out.write(reinterpret_cast<char*>(&numTimesteps_), sizeof(size_t));
+  out.write(reinterpret_cast<char*>(&xDim_), sizeof(size_t));
+  out.write(reinterpret_cast<char*>(&yDim_), sizeof(size_t));
+  out.write(reinterpret_cast<char*>(&zDim_), sizeof(size_t));
   out.write(reinterpret_cast<char*>(&data_[0]), 
     sizeof(float)*numTimesteps_*numVoxelsPerTimestep_);
 

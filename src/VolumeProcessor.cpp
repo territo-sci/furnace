@@ -24,16 +24,16 @@ VolumeProcessor::VolumeProcessor()
 
 VolumeProcessor::~VolumeProcessor() { }
 
-void VolumeProcessor::SetDimensions(unsigned int _xDim,
-                                    unsigned int _yDim,
-                                    unsigned int _zDim) {
+void VolumeProcessor::SetDimensions(size_t _xDim,
+                                    size_t _yDim,
+                                    size_t _zDim) {
     xDim_ = _xDim;
     yDim_ = _yDim;
     zDim_ = _zDim;
     numVoxelsPerTimestep_ = xDim_ * yDim_ * zDim_;
 }
 
-void VolumeProcessor::SetGridType(unsigned int _gridType) {
+void VolumeProcessor::SetGridType(size_t _gridType) {
     gridType_ = _gridType;
 }
 
@@ -62,7 +62,7 @@ bool VolumeProcessor::WriteHeader(const std::string &_destFolder) {
         return false;
     }
 
-    size_t s = sizeof(unsigned int);
+    size_t s = sizeof(size_t);
     fwrite(reinterpret_cast<void *>(&gridType_), s, 1, out);
     fwrite(reinterpret_cast<void *>(&numTimesteps_), s, 1, out);
     fwrite(reinterpret_cast<void *>(&xDim_), s, 1, out);
@@ -114,7 +114,7 @@ bool VolumeProcessor::WriteFinal(const std::string &_destFolder) {
     // Read timesteps
     // Process each file in turn
     float *floatBuffer = new float[numVoxelsPerTimestep_];
-    for (unsigned int i = 0; i < numTimesteps_; ++i) {
+    for (size_t i = 0; i < numTimesteps_; ++i) {
 
 
         std::string timestepStr = boost::lexical_cast<std::string>(i);
@@ -132,7 +132,7 @@ bool VolumeProcessor::WriteFinal(const std::string &_destFolder) {
         fclose(in);
 
         // Normalize
-        for (unsigned int j = 0; j < numVoxelsPerTimestep_; ++j) {
+        for (size_t j = 0; j < numVoxelsPerTimestep_; ++j) {
             floatBuffer[j] = (floatBuffer[j] - min_) / (max_ - min_);
         }
 

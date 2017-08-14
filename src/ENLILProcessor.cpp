@@ -66,7 +66,7 @@ bool ENLILProcessor::ProcessFolder(const std::string &_sourceFolder,
     }
 
     // Set number of timesteps (number of files in folder)
-    numTimesteps_ = static_cast<unsigned int>(filenames.size());
+    numTimesteps_ = static_cast<size_t>(filenames.size());
     std::cout << "Found " << numTimesteps_ << " timesteps" << std::endl;
     // Allocate space for one timestep
     size_t nvpts = static_cast<size_t>(numVoxelsPerTimestep_);
@@ -83,7 +83,7 @@ bool ENLILProcessor::ProcessFolder(const std::string &_sourceFolder,
     }
 
     // Process the individual timesteps
-    unsigned int timestep = 0;
+    size_t timestep = 0;
     for (auto it = filenames.begin(); it != filenames.end(); ++it) {
         if (!ProcessFile(it->string(), _destFolder, timestep++)) {
             std::cerr << "Failed to read timestep " << timestep << std::endl;
@@ -111,7 +111,7 @@ bool ENLILProcessor::ProcessFolder(const std::string &_sourceFolder,
 
 bool ENLILProcessor::ProcessFile(const std::string &_filename,
                                  const std::string &_destFolder,
-                                 unsigned int _timestep) {
+                                 size_t _timestep) {
 
     std::string timestepStr = boost::lexical_cast<std::string>(_timestep);
     std::string fullPath = _destFolder + timestepFilename_ + timestepStr +
@@ -168,14 +168,14 @@ bool ENLILProcessor::ProcessFile(const std::string &_filename,
     }
      */
 
-    for (unsigned int phi = 0; phi < zDim_; ++phi) {
-        unsigned int progress = (unsigned int) (((float) phi / (float) zDim_) * 100.f);
+    for (size_t phi = 0; phi < zDim_; ++phi) {
+        size_t progress = (size_t) (((float) phi / (float) zDim_) * 100.f);
         if (progress % 10 == 0) {
             std::cout << "Processing timestep " << _timestep + 1 << "/"
                       << numTimesteps_ << ", " << progress << "%     \r" << std::flush;
         }
-        for (unsigned int theta = 0; theta < yDim_; ++theta) {
-            for (unsigned int r = 0; r < xDim_; ++r) {
+        for (size_t theta = 0; theta < yDim_; ++theta) {
+            for (size_t r = 0; r < xDim_; ++r) {
                 AttributeObject attr = {r, rMin, rMax, theta, thetaMin, thetaMax, phi, phiMin, phiMax};
                 //io_service.post(boost::bind(&ENLILProcessor::fileWorker, this, attr, interpolator));
                 fileWorker(attr, interpolator);
@@ -212,7 +212,7 @@ bool ENLILProcessor::ProcessFile(const std::string &_filename,
 }
 
 bool ENLILProcessor::fileWorker(AttributeObject &attr, ccmc::Interpolator *interpolator) {
-    unsigned int r = attr.r,
+    size_t r = attr.r,
             theta = attr.theta,
             phi = attr.phi;
 
@@ -224,7 +224,7 @@ bool ENLILProcessor::fileWorker(AttributeObject &attr, ccmc::Interpolator *inter
             phiMax = attr.phiMax;
 
     // Calculate array index
-    unsigned int index = r + theta * this->xDim_ + phi * this->xDim_ * this->yDim_;
+    size_t index = r + theta * this->xDim_ + phi * this->xDim_ * this->yDim_;
 
     // Put r in the [0..sqrt(3)] range
     float rNorm = sqrt(3.0) * (float) r / (float) (this->xDim_ - 1);

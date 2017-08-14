@@ -20,13 +20,13 @@ namespace osp {
 class ENLILProcessor : public VolumeProcessor {
 public:
     struct AttributeObject {
-        unsigned int r;
+        size_t r;
         float rMin;
         float rMax;
-        unsigned int phi;
+        size_t phi;
         float phiMin;
         float phiMax;
-        unsigned int theta;
+        size_t theta;
         float thetaMin;
         float thetaMax;
     };
@@ -50,7 +50,7 @@ private:
     // Process timesteps from CDF files and write result to new file
     bool ProcessFile(const std::string &_filename,
                      const std::string &_destFolder,
-                     unsigned int _timestep);
+                     size_t _timestep);
 
     bool fileWorker(AttributeObject &attr, ccmc::Interpolator *interpolator);
 

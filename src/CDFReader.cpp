@@ -57,11 +57,11 @@ bool CDFReader::ReadFolder() {
     }
 
     // Set number of timesteps (number of files in folder)
-    unsigned int numTimesteps = (unsigned int) filenames_.size();
+    size_t numTimesteps = (size_t) filenames_.size();
     dataObject_->SetNumTimesteps(numTimesteps);
 
     // Read the individual timesteps
-    unsigned int timestep = 0;
+    size_t timestep = 0;
     for (std::set<fs::path>::iterator it = filenames_.begin();
          it != filenames_.end();
          it++) {

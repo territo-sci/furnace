@@ -32,11 +32,11 @@ class VolumeProcessor {
 public:
     virtual ~VolumeProcessor();
     virtual bool ProcessFolder(const std::string &_sourceFolder, const std::string &_destFolder) = 0;
-    void SetDimensions(unsigned int _xDim, unsigned int _yDim, unsigned int _zDim);
+    void SetDimensions(size_t _xDim, size_t _yDim, size_t _zDim);
 
     // 0 for cartesian
     // 1 for spherical
-    void SetGridType(unsigned int _gridType);
+    void SetGridType(size_t _gridType);
 
 protected:
     VolumeProcessor();
@@ -65,17 +65,17 @@ protected:
     const std::string finalFilename = "volume.vdf";
 
     // Data to write
-    unsigned int gridType_;
-    unsigned int numTimesteps_;
-    unsigned int xDim_;
-    unsigned int yDim_;
-    unsigned int zDim_;
+    size_t gridType_;
+    size_t numTimesteps_;
+    size_t xDim_;
+    size_t yDim_;
+    size_t zDim_;
 
     // Stores data in one time step before writing to disk
     std::vector<float> data_;
 
     // Num voxels for one frame
-    unsigned int numVoxelsPerTimestep_;
+    size_t numVoxelsPerTimestep_;
 
     // For normalization step
     float min_;

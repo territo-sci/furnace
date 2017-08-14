@@ -37,7 +37,7 @@ int main(int ac, char *av[]) {
     // Read config (very simple implementation)
     std::string sourceFolder = "";
     std::string destFolder = "";
-    unsigned int xDim = 0, yDim = 0, zDim = 0;
+    size_t xDim = 0, yDim = 0, zDim = 0;
     std::string modelName = "";
     osp::Furnace::ModelType modelType = osp::Furnace::NO_MODEL;
     std::string gridName = "";

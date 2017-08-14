@@ -35,7 +35,7 @@ private:
     // Read individual timesteps from CDF files and write result to new file
     bool ProcessFile(const std::string &_filename,
                      const std::string &_destFolder,
-                     unsigned int _timestep);
+                     size_t _timestep);
 
     // CCMC parts
     ccmc::Kameleon *kameleon_;

@@ -33,12 +33,12 @@ void Furnace::SetDestFolder(const std::string &_destFolder) {
 }
 
 void Furnace::SetGridType(GridType _gridType) {
-    volumeProcessor_->SetGridType(static_cast<unsigned int>(_gridType));
+    volumeProcessor_->SetGridType(static_cast<size_t>(_gridType));
 }
 
-void Furnace::SetDimensions(unsigned int _xDim,
-                            unsigned int _yDim,
-                            unsigned int _zDim) {
+void Furnace::SetDimensions(size_t _xDim,
+                            size_t _yDim,
+                            size_t _zDim) {
     if (!volumeProcessor_) {
         std::cerr << "Trying to set dimensions without a reader" << std::endl;
     } else {

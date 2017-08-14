@@ -87,16 +87,16 @@ bool MLProcessor::ProcessFolder(const std::string &_sourceFolder,
   }
 
   // Write each time step to a separate file
-  for (unsigned int ts=0; ts<numTimesteps_; ++ts) {
+  for (size_t ts=0; ts<numTimesteps_; ++ts) {
 
     // period from 0 to 2PI
     float period = (2.f*M_PI*static_cast<float>(ts) / 
                    static_cast<float>(numTimesteps_));
     
     // Loop over volume and calculate values
-    for (unsigned int z=0; z<zDim_; ++z) {
-      for (unsigned int y=0; y<yDim_; ++y) {
-        for (unsigned int x=0; x<xDim_; ++x) {
+    for (size_t z=0; z<zDim_; ++z) {
+      for (size_t y=0; y<yDim_; ++y) {
+        for (size_t x=0; x<xDim_; ++x) {
           
           // Scale [0,1] coord to [-1, 1]
           float xf = (static_cast<float>(x)/static_cast<float>(xDim_))*2.f-1.f; 
@@ -108,7 +108,7 @@ bool MLProcessor::ProcessFolder(const std::string &_sourceFolder,
           float rho = ((1.f-sin(M_PI*zf/2.f))+alpha*(1.f + p_r)) / 
                       (2.f*(1.f+alpha));
 
-          unsigned int index = x + y*xDim_ + z*xDim_*yDim_;
+          size_t index = x + y*xDim_ + z*xDim_*yDim_;
           data_[index] = rho;
 
           // Update min/max

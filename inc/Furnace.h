@@ -39,7 +39,7 @@ public:
     void SetGridType(GridType _gridType);
 
     // Setters
-    void SetDimensions(unsigned int _xDim, unsigned int _yDim, unsigned int _zDim);
+    void SetDimensions(size_t _xDim, size_t _yDim, size_t _zDim);
     void SetSourceFolder(const std::string &_sourceFolder);
     void SetDestFolder(const std::string &_destFolder);
 

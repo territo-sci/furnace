@@ -157,6 +157,7 @@ bool ENLILProcessor::ProcessFile(const std::string &_filename,
     // [x, y, z] -> [r, theta, phi] for spherical model
     // TODO: Parallelize http://think-async.com/Asio/Recipes?skin=clean.nat,asio,pattern#A_thread_pool_for_executing_arbi
 
+    /*
     as::io_service io_service;
     as::io_service::work work(io_service);
 
@@ -165,6 +166,7 @@ bool ENLILProcessor::ProcessFile(const std::string &_filename,
     for (std::size_t i = 0; i < threadCount; ++i) {
         threads.create_thread(boost::bind(&as::io_service::run, &io_service));
     }
+     */
 
     for (unsigned int phi = 0; phi < zDim_; ++phi) {
         unsigned int progress = (unsigned int) (((float) phi / (float) zDim_) * 100.f);
@@ -174,15 +176,18 @@ bool ENLILProcessor::ProcessFile(const std::string &_filename,
         }
         for (unsigned int theta = 0; theta < yDim_; ++theta) {
             for (unsigned int r = 0; r < xDim_; ++r) {
-                const AttributeObject attr = {r, rMin, rMax, theta, thetaMin, thetaMax, phi, phiMin, phiMax};
-                io_service.post(boost::bind(&ENLILProcessor::fileWorker, this, attr, interpolator));
+                AttributeObject attr = {r, rMin, rMax, theta, thetaMin, thetaMax, phi, phiMin, phiMax};
+                //io_service.post(boost::bind(&ENLILProcessor::fileWorker, this, attr, interpolator));
+                fileWorker(attr, interpolator);
 
             } // r
         } // theta
     } // phi
 
+    /*
     io_service.stop();
     threads.join_all();
+     */
 
     std::cout << "Processing timestep " << _timestep + 1 << "/"
               << numTimesteps_ << ", 100%   \r" << std::flush;

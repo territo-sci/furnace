@@ -9,6 +9,7 @@
 #include <MLProcessor.h>
 #include <iostream>
 #include <unordered_map>
+#include <BATSRUSProcessor.h>
 
 
 using namespace osp;
@@ -72,12 +73,17 @@ bool Furnace::SetModelType(ModelType _modelType) {
         std::cout << "Warning: Model already set" << std::endl;
         delete volumeProcessor_;
     }
-
-    if (_modelType == ENLIL) {
+    switch(_modelType) {
+    case ENLIL:
         volumeProcessor_ = ENLILProcessor::New();
-    } else if (_modelType == ML) {
+        break;
+    case ML:
         volumeProcessor_ = MLProcessor::New();
-    } else {
+        break;
+    case BATSRUS:
+        volumeProcessor_ = BATSRUSProcessor::New();
+        break;
+    default:
         std::cerr << "Unknown model type" << std::endl;
         return false;
     }

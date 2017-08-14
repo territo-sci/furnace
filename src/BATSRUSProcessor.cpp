@@ -277,7 +277,8 @@ bool BATSRUSProcessor::fileWorker(AttributeObject &attr, ccmc::Interpolator *int
     // Update min/max
     if (diff > this->max_) {
         this->max_ = diff;
-    } else if (diff < this->min_) {
+    }
+    if (diff < this->min_) {
         this->min_ = diff;
     }
 

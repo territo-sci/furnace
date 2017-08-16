@@ -111,7 +111,7 @@ bool BATSRUSProcessor::ProcessFolder(const std::string &_sourceFolder,
 bool BATSRUSProcessor::ProcessFile(const std::string &_filename,
                                    const std::string &_destFolder,
                                    size_t _timestep) {
-
+    std::cout << _filename << std::endl;
     std::string timestepStr = boost::lexical_cast<std::string>(_timestep);
     std::string fullPath = _destFolder + timestepFilename_ + timestepStr +
                            timestepSuffix_;
@@ -144,8 +144,12 @@ bool BATSRUSProcessor::ProcessFile(const std::string &_filename,
             kameleon_->getVariableAttribute("phi", "actual_max").getAttributeFloat();
 
 
+    // Need to load variable for later use by interpolator
+    kameleon_->loadVariable("rho");
+
     // Create interpolator (has to be done after file is opened)
     ccmc::Interpolator *interpolator = kameleon_->createNewInterpolator();
+    interpolator_ = interpolator;
 
     if (!interpolator) {
         std::cerr << "Failed to create interpolator" << std::endl;
@@ -245,7 +249,7 @@ bool BATSRUSProcessor::fileWorker(AttributeObject &attr, ccmc::Interpolator *int
 
     // Hardcoded variables (rho or rho - rho_back)
     // TODO Don't hardcode, make more flexible
-    float rho = 0.f, rho_back = 0.f, diff = 0.f;
+    float rho = 0.f, diff = 0.f;
     // See if sample point is inside domain
     if (rPh < rMin || rPh > rMax || thetaPh < thetaMin ||
         thetaPh > thetaMax || phiPh < phiMin || phiPh > phiMax) {
@@ -263,12 +267,9 @@ bool BATSRUSProcessor::fileWorker(AttributeObject &attr, ccmc::Interpolator *int
         // Convert from [0, 2pi] rad to [0, 360] degrees
         phiPh = phiPh * 180.f / M_PI;
         // Sample
-        rho = interpolator->interpolate("rho", rPh, thetaPh, phiPh);
-        rho_back = interpolator->interpolate("rho-back", rPh, thetaPh, phiPh);
-
+        rho = interpolator_->interpolate("rho", rPh, thetaPh, phiPh);
         // Calculate difference (or just rho)
         diff = rho;
-        //diff = rho - rho_back;
 
         // Clamp to 0
         if (diff < 0.f) diff = 0.f;
